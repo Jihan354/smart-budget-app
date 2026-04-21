@@ -1,23 +1,38 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [expenses, setExpenses] = useState([]);
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:5000/expenses")
-      .then(res => res.json())
-      .then(data => setExpenses(data));
-  }, []);
+  const [isLogin, setIsLogin] = useState(true);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Data Pengeluaran</h1>
+    <div className="container">
+      <div className="card">
+        <h2>{isLogin ? "Log In" : "Create Account"}</h2>
 
-      {expenses.map((item) => (
-        <div key={item.id}>
-          <p>{item.nama} - Rp{item.jumlah}</p>
-        </div>
-      ))}
+        {!isLogin && (
+          <input type="text" placeholder="Full Name" />
+        )}
+
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Password" />
+
+        {!isLogin && (
+          <div className="checkbox">
+            <input type="checkbox" />
+            <span>I accept the terms of the agreement</span>
+          </div>
+        )}
+
+        <button>
+          {isLogin ? "Log In" : "Sign Up"}
+        </button>
+
+        <p className="switch" onClick={() => setIsLogin(!isLogin)}>
+          {isLogin
+            ? "Don’t have an account? Sign Up"
+            : "Already have an account? Log In"}
+        </p>
+      </div>
     </div>
   );
 }
