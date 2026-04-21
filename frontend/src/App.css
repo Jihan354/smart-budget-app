@@ -243,3 +243,56 @@ button {
   cursor: pointer;
   color: #7f5af0;
 }
+
+.container {
+  text-align: center;
+  padding: 20px;
+}
+
+.form {
+  margin: 20px 0;
+}
+
+input {
+  margin: 5px;
+  padding: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  background: purple;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.card {
+  background: #eee;
+  margin: 10px auto;
+  padding: 10px;
+  width: 200px;
+  border-radius: 10px;
+}
+
+.container {
+  text-align: center;
+}
+
+input {
+  margin: 5px;
+  padding: 10px;
+}
+
+button {
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.card {
+  background: #eee;
+  margin: 10px auto;
+  padding: 10px;
+  width: 200px;
+  border-radius: 10px;
+}
