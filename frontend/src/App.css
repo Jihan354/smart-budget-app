@@ -296,3 +296,11 @@ button {
   width: 200px;
   border-radius: 10px;
 }
+input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 300px;
+}
