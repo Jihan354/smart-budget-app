@@ -8,6 +8,7 @@ function App() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [namaUser, setNamaUser] = useState("");
 
   // DATA
@@ -54,7 +55,7 @@ function App() {
     try {
       const res = await fetch("http://127.0.0.1:5000/login", {
         method: "POST",
-        headers: {"Content-Type":"application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
@@ -77,11 +78,11 @@ function App() {
     try {
       const res = await fetch("http://127.0.0.1:5000/register", {
         method: "POST",
-        headers: {"Content-Type":"application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           nama: namaUser,
           email,
-          password
+          password,
         }),
       });
 
@@ -128,13 +129,13 @@ function App() {
     if (editId) {
       await fetch(`http://127.0.0.1:5000/expenses/${editId}`, {
         method: "PUT",
-        headers: {"Content-Type":"application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
     } else {
       await fetch("http://127.0.0.1:5000/expenses", {
         method: "POST",
-        headers: {"Content-Type":"application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
     }
@@ -191,18 +192,33 @@ function App() {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="password-box">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{
+                WebkitTextSecurity: showPassword ? "none" : "square",
+              }}
+            />
+
+            <span
+              className="eye"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "🙈" : "👁"}
+            </span>
+          </div>
 
           <button onClick={isRegister ? handleRegister : handleLogin}>
             {isRegister ? "Register" : "Login"}
           </button>
 
           <p onClick={() => setIsRegister(!isRegister)}>
-            {isRegister ? "Sudah punya akun? Login" : "Belum punya akun? Register"}
+            {isRegister
+              ? "Sudah punya akun? Login"
+              : "Belum punya akun? Register"}
           </p>
         </div>
       ) : (
@@ -210,14 +226,12 @@ function App() {
           <h1>Dashboard 💰</h1>
           <button onClick={handleLogout}>Logout</button>
 
-          {/* SUMMARY */}
           <div className="summary">
             <h3>Total Expense: Rp {summary.total_expense || 0}</h3>
             <h3>Total Income: Rp {summary.total_income || 0}</h3>
             <h3>Saldo: Rp {summary.saldo || 0}</h3>
           </div>
 
-          {/* FORM */}
           <div className="form">
             <input
               type="text"
@@ -251,7 +265,6 @@ function App() {
               onChange={(e) => setTanggal(e.target.value)}
             />
 
-            {/* 🔥 trip hanya untuk expense */}
             {type === "expense" && (
               <input
                 type="text"
@@ -266,7 +279,6 @@ function App() {
             </button>
           </div>
 
-          {/* LIST */}
           <div className="list">
             {data.map((item) => (
               <div key={item.id} className="card">
