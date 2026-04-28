@@ -7,207 +7,279 @@
   border: 2px solid transparent;
   transition: border-color 0.3s;
   margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+.counter:hover {
+  border-color: var(--accent-border);
 }
 
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+.counter:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
+/* ===============================
+   RESET DASAR
+=============================== */
 
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
+* {
+  margin: 0;
   padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  box-sizing: border-box;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
-  width: 100%;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
-
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
-}
+/* body utama */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background: #f4f6fb;
 }
+
+/* ===============================
+   CONTAINER LOGIN / GLOBAL
+=============================== */
 
 .container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(to right, #7f5af0, #ff8ba7);
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 240px 1fr;
 }
 
-.card {
-  background: #fff;
+/* ===============================
+   SIDEBAR DASHBOARD
+=============================== */
+
+.sidebar {
+  background: linear-gradient(180deg, #7f5af0, #9333ea);
+  color: white;
+  padding: 30px 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.sidebar button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: white;
+  color: #7f5af0;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+/* ===============================
+   MAIN CONTENT
+=============================== */
+
+.main {
   padding: 30px;
-  border-radius: 20px;
-  width: 300px;
-  text-align: center;
 }
 
-.card h2 {
+/* ===============================
+   SUMMARY CARD
+=============================== */
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.card-summary {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+}
+
+.card-summary h3 {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.card-summary p {
+  font-size: 24px;
+  font-weight: bold;
+  color: #7f5af0;
+}
+
+/* ===============================
+   CHART SECTION
+=============================== */
+
+.chart-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.chart-box {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+
+.chart-box h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #555;
+}
+
+/* ===============================
+   SEARCH + FILTER
+=============================== */
+
+.top-tools {
+  display: flex;
+  gap: 15px;
   margin-bottom: 20px;
 }
 
-.card input {
+.top-tools input,
+.top-tools select,
+.top-tools button {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.top-tools input,
+.top-tools select {
+  width: 100%;
+}
+
+/* tombol export csv */
+.top-tools button {
+  background: #7f5af0;
+  color: white;
+  border: none;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+/* focus input modern */
+.top-tools input:focus,
+.top-tools select:focus,
+.form-box input:focus,
+.form-box select:focus {
+  outline: none;
+  border: 1px solid #7f5af0;
+  box-shadow: 0 0 0 3px rgba(127, 90, 240, 0.15);
+}
+
+/* ===============================
+   FORM + LIST SECTION
+=============================== */
+
+.content {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 20px;
+}
+
+/* ===============================
+   FORM INPUT
+=============================== */
+
+.form-box {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+}
+
+.form-box h3 {
+  margin-bottom: 15px;
+}
+
+.form-box input,
+.form-box select,
+.form-box button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.form-box button {
+  background: #7f5af0;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* ===============================
+   LIST DATA
+=============================== */
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+/* ===============================
+   CARD TRANSAKSI
+=============================== */
+
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 15px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+}
+
+.card p {
+  margin-bottom: 8px;
+}
+
+.card button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.edit {
+  background: #ffc107;
+}
+
+.delete {
+  background: #ff4d4d;
+  color: white;
+}
+
+/* ===============================
+   LOGIN CARD
+=============================== */
+
+.login-card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 320px;
+  margin: auto;
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-bottom: 20px;
+}
+
+.login-card input {
   width: 100%;
   padding: 10px;
   margin: 8px 0;
@@ -215,92 +287,183 @@ body {
   border: 1px solid #ccc;
 }
 
-button {
-  width: 100%;
-  padding: 10px;
+/* ===============================
+   PASSWORD BOX
+=============================== */
+
+.password-box {
+  position: relative;
+}
+
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  cursor: pointer;
+}
+
+/* ===============================
+   BUTTON HOVER
+=============================== */
+
+button:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+  transition: 0.2s;
+}
+
+/* ===============================
+   CARD HOVER
+=============================== */
+
+.card:hover,
+.card-summary:hover,
+.chart-box:hover {
+  transform: translateY(-3px);
+  transition: 0.2s;
+}
+
+/* ===============================
+   DARK MODE
+=============================== */
+
+.dark {
+  background: #121212;
+  color: white;
+}
+
+.dark .card,
+.dark .card-summary,
+.dark .form-box,
+.dark .login-card,
+.dark .chart-box,
+.dark .modal-box {
+  background: #1f1f1f;
+  color: white;
+}
+
+.dark .chart-box h3 {
+  color: white;
+}
+
+.dark input,
+.dark select {
+  background: #2a2a2a;
+  color: white;
+  border: 1px solid #555;
+}
+
+.dark button {
   background: #7f5af0;
   color: white;
-  border: none;
-  border-radius: 8px;
-  margin-top: 10px;
-  cursor: pointer;
 }
 
-.checkbox {
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  margin-top: 5px;
+/* ===============================
+   TOAST
+=============================== */
+
+.Toastify__toast-container {
+  z-index: 9999;
 }
 
-.checkbox input {
-  margin-right: 5px;
+/* ===============================
+   RESPONSIVE TABLET
+=============================== */
+
+@media (max-width: 1100px) {
+  .chart-section {
+    grid-template-columns: 1fr;
+  }
 }
 
-.switch {
-  margin-top: 10px;
-  font-size: 12px;
-  cursor: pointer;
-  color: #7f5af0;
+/* ===============================
+   RESPONSIVE MOBILE
+=============================== */
+
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    text-align: center;
+  }
+
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .main {
+    padding: 15px;
+  }
 }
 
-.container {
-  text-align: center;
-  padding: 20px;
+@media (max-width: 768px) {
+  .top-tools {
+    flex-direction: column;
+  }
+
+  .top-tools button {
+    width: 100%;
+  }
+
+  .chart-box svg {
+    min-width: 420px;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
 }
 
-.form {
-  margin: 20px 0;
-}
+/* ==========================
+   DELETE MODAL
+========================== */
 
-input {
-  margin: 5px;
-  padding: 10px;
-}
-
-button {
-  padding: 10px 20px;
-  background: purple;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.card {
-  background: #eee;
-  margin: 10px auto;
-  padding: 10px;
-  width: 200px;
-  border-radius: 10px;
-}
-
-.container {
-  text-align: center;
-}
-
-input {
-  margin: 5px;
-  padding: 10px;
-}
-
-button {
-  margin: 5px;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.card {
-  background: #eee;
-  margin: 10px auto;
-  padding: 10px;
-  width: 200px;
-  border-radius: 10px;
-}
-input {
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  box-sizing: border-box;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
 }
 
-.card {
-  width: 300px;
+.modal-box {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.modal-box h3 {
+  margin-bottom: 20px;
+}
+
+.modal-action {
+  display: flex;
+  gap: 10px;
+}
+
+.cancel-btn {
+  flex: 1;
+  background: #ddd;
+  color: black;
+}
+
+.delete-btn {
+  flex: 1;
+  background: #ff4d4d;
+  color: white;
 }
