@@ -23,11 +23,16 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+/* =========================================
+   IMPORT PDF
+========================================= */
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 function App() {
   /* ==================================================
      AUTH STATE
   ================================================== */
-
   const [isLogin, setIsLogin] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
@@ -39,7 +44,6 @@ function App() {
   /* ==================================================
      DATA TRANSAKSI
   ================================================== */
-
   const [data, setData] = useState([]);
   const [nama, setNama] = useState("");
   const [kategori, setKategori] = useState("");
@@ -52,22 +56,25 @@ function App() {
   /* ==================================================
      FITUR FRONTEND
   ================================================== */
-
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [darkMode, setDarkMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  /* ==================================================
+     PROFILE USER (BARU)
+  ================================================== */
+  const [userName] = useState("David");
 
   /* ==================================================
      DELETE MODAL
   ================================================== */
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
   /* ==================================================
      SUMMARY
   ================================================== */
-
   const [summary, setSummary] = useState({});
 
   useEffect(() => {
@@ -78,10 +85,21 @@ function App() {
     }
   }, []);
 
+  /* ==================================================
+     GET DATA
+  ================================================== */
   const getExpenses = async () => {
-    const res = await fetch("http://127.0.0.1:5000/expenses");
-    const result = await res.json();
-    setData(result);
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://127.0.0.1:5000/expenses");
+      const result = await res.json();
+      setData(result);
+    } catch {
+      toast.error("Gagal mengambil data");
+    }
+
+    setLoading(false);
   };
 
   const getSummary = async () => {
@@ -97,6 +115,9 @@ function App() {
     }
   }, [isLogin]);
 
+  /* ==================================================
+     LOGIN
+  ================================================== */
   const handleLogin = async () => {
     try {
       const res = await fetch("http://127.0.0.1:5000/login", {
@@ -124,6 +145,9 @@ function App() {
     }
   };
 
+  /* ==================================================
+     REGISTER
+  ================================================== */
   const handleRegister = async () => {
     try {
       const res = await fetch("http://127.0.0.1:5000/register", {
@@ -151,12 +175,18 @@ function App() {
     }
   };
 
+  /* ==================================================
+     LOGOUT
+  ================================================== */
   const handleLogout = () => {
     localStorage.removeItem("isLogin");
     setIsLogin(false);
     toast.success("Logout berhasil");
   };
 
+  /* ==================================================
+     SUBMIT
+  ================================================== */
   const handleSubmit = async () => {
     if (!nama || !kategori || !jumlah || !tanggal) {
       toast.warning("Isi field wajib!");
@@ -211,6 +241,9 @@ function App() {
     getSummary();
   };
 
+  /* ==================================================
+     DELETE
+  ================================================== */
   const handleDelete = async (id) => {
     await fetch(`http://127.0.0.1:5000/expenses/${id}`, {
       method: "DELETE"
@@ -222,6 +255,9 @@ function App() {
     getSummary();
   };
 
+  /* ==================================================
+     EDIT
+  ================================================== */
   const handleEdit = (item) => {
     setNama(item.nama);
     setKategori(item.kategori);
@@ -232,9 +268,38 @@ function App() {
     setEditId(item.id);
   };
 
-  /* =========================================
-     EXPORT CSV (BARU)
-  ========================================= */
+  /* ==================================================
+     FILTER
+  ================================================== */
+  const filteredData = data.filter((item) => {
+    const cocokSearch =
+      item.nama.toLowerCase().includes(search.toLowerCase()) ||
+      item.kategori.toLowerCase().includes(search.toLowerCase());
+
+    const cocokFilter =
+      filterType === "all" ? true : item.type === filterType;
+
+    return cocokSearch && cocokFilter;
+  });
+
+  /* ==================================================
+     STATISTIK BULANAN (BARU)
+  ================================================== */
+  const monthlyData = data.reduce((acc, item) => {
+    const bulan = item.tanggal?.slice(0, 7);
+
+    if (!acc[bulan]) {
+      acc[bulan] = 0;
+    }
+
+    acc[bulan] += Number(item.jumlah);
+
+    return acc;
+  }, {});
+
+  /* ==================================================
+     EXPORT CSV
+  ================================================== */
   const exportCSV = () => {
     const header = [
       "Nama",
@@ -270,16 +335,39 @@ function App() {
     link.click();
   };
 
-  const filteredData = data.filter((item) => {
-    const cocokSearch =
-      item.nama.toLowerCase().includes(search.toLowerCase()) ||
-      item.kategori.toLowerCase().includes(search.toLowerCase());
+  /* ==================================================
+     EXPORT PDF
+  ================================================== */
+  const exportPDF = () => {
+    const doc = new jsPDF();
 
-    const cocokFilter =
-      filterType === "all" ? true : item.type === filterType;
+    doc.setFontSize(18);
+    doc.text("Smart Budget Report", 14, 20);
 
-    return cocokSearch && cocokFilter;
-  });
+    doc.setFontSize(12);
+    doc.text(`Total Income : Rp ${summary.total_income || 0}`, 14, 35);
+    doc.text(`Total Expense : Rp ${summary.total_expense || 0}`, 14, 43);
+    doc.text(`Saldo : Rp ${summary.saldo || 0}`, 14, 51);
+
+    const tableData = filteredData.map((item) => [
+      item.nama,
+      item.kategori,
+      item.jumlah,
+      item.tanggal,
+      item.trip,
+      item.type
+    ]);
+
+    autoTable(doc, {
+      startY: 60,
+      head: [["Nama", "Kategori", "Jumlah", "Tanggal", "Trip", "Type"]],
+      body: tableData
+    });
+
+    doc.save("laporan-budget.pdf");
+
+    toast.success("PDF berhasil didownload");
+  };
 
   const COLORS = ["#7f5af0", "#ff4d4d"];
 
@@ -353,6 +441,11 @@ function App() {
           <div className="sidebar">
             <h2>💰 Smart Budget</h2>
 
+            {/* PROFILE USER */}
+            <p className="profile-user">
+              Halo, {userName} 👋
+            </p>
+
             <button onClick={() => setDarkMode(!darkMode)}>
               {darkMode ? "☀ Light" : "🌙 Dark"}
             </button>
@@ -418,6 +511,22 @@ function App() {
               </div>
             </div>
 
+            {/* STATISTIK BULANAN */}
+            <div className="monthly-box">
+              <h3>📊 Statistik Bulanan</h3>
+
+              {Object.keys(monthlyData).length === 0 ? (
+                <p>Belum ada data</p>
+              ) : (
+                Object.entries(monthlyData).map(([bulan, total]) => (
+                  <div className="month-row" key={bulan}>
+                    <span>{bulan}</span>
+                    <span>Rp {total}</span>
+                  </div>
+                ))
+              )}
+            </div>
+
             <div className="top-tools">
               <input
                 type="text"
@@ -435,10 +544,8 @@ function App() {
                 <option value="expense">Expense</option>
               </select>
 
-              {/* TOMBOL EXPORT BARU */}
-              <button onClick={exportCSV}>
-                Export CSV
-              </button>
+              <button onClick={exportCSV}>Export CSV</button>
+              <button onClick={exportPDF}>Export PDF</button>
             </div>
 
             <div className="content">
@@ -495,33 +602,45 @@ function App() {
               </div>
 
               <div className="list">
-                {filteredData.map((item) => (
-                  <div key={item.id} className="card">
-                    <p><b>{item.nama}</b></p>
-                    <p>{item.kategori}</p>
-                    <p>Rp {item.jumlah}</p>
-                    <p>{item.tanggal}</p>
-                    <p>{item.trip}</p>
-                    <p>{item.type}</p>
-
-                    <button
-                      className="edit"
-                      onClick={() => handleEdit(item)}
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      className="delete"
-                      onClick={() => {
-                        setDeleteId(item.id);
-                        setShowDeleteModal(true);
-                      }}
-                    >
-                      Hapus
-                    </button>
+                {loading ? (
+                  <div className="empty-box">
+                    <h3>Loading data...</h3>
+                    <p>Mohon tunggu sebentar</p>
                   </div>
-                ))}
+                ) : filteredData.length === 0 ? (
+                  <div className="empty-box">
+                    <h3>Belum ada transaksi</h3>
+                    <p>Tambahkan data pertama kamu 🚀</p>
+                  </div>
+                ) : (
+                  filteredData.map((item) => (
+                    <div key={item.id} className="card">
+                      <p><b>{item.nama}</b></p>
+                      <p>{item.kategori}</p>
+                      <p>Rp {item.jumlah}</p>
+                      <p>{item.tanggal}</p>
+                      <p>{item.trip}</p>
+                      <p>{item.type}</p>
+
+                      <button
+                        className="edit"
+                        onClick={() => handleEdit(item)}
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="delete"
+                        onClick={() => {
+                          setDeleteId(item.id);
+                          setShowDeleteModal(true);
+                        }}
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
