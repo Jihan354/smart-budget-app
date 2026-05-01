@@ -1,0 +1,11 @@
+# ================= BACKEND =================
+backend/__pycache__/
+backend/database.db
+backend/venv/
+
+# ================= FRONTEND =================
+frontend/node_modules/
+
+# ================= GLOBAL =================
+*.pyc
+.env

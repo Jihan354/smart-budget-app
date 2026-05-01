@@ -1,684 +1,188 @@
 import { useEffect, useState } from "react";
+import { getExpenses, getSummary } from "./services/api";
+
+import Sidebar from "./components/layout/Sidebar";
+import Summary from "./components/dashboard/Summary";
+import Prediction from "./components/dashboard/Prediction";
+import ExpenseForm from "./components/Expense/ExpenseForm";
+import ExpenseList from "./components/Expense/ExpenseList";
+import Charts from "./components/dashboard/Charts";
+import Insight from "./components/dashboard/Insight";
+
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+
 import "./App.css";
 
-/* =========================================
-   IMPORT CHART
-========================================= */
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Legend
-} from "recharts";
-
-/* =========================================
-   IMPORT TOAST
-========================================= */
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-/* =========================================
-   IMPORT PDF
-========================================= */
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-
 function App() {
-  /* ==================================================
-     AUTH STATE
-  ================================================== */
-  const [isLogin, setIsLogin] = useState(false);
-  const [isRegister, setIsRegister] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [namaUser, setNamaUser] = useState("");
-
-  /* ==================================================
-     DATA TRANSAKSI
-  ================================================== */
+  // ================= STATE =================
   const [data, setData] = useState([]);
-  const [nama, setNama] = useState("");
-  const [kategori, setKategori] = useState("");
-  const [jumlah, setJumlah] = useState("");
-  const [tanggal, setTanggal] = useState("");
-  const [trip, setTrip] = useState("");
-  const [type, setType] = useState("expense");
-  const [editId, setEditId] = useState(null);
-
-  /* ==================================================
-     FITUR FRONTEND
-  ================================================== */
-  const [search, setSearch] = useState("");
-  const [filterType, setFilterType] = useState("all");
-  const [darkMode, setDarkMode] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  /* ==================================================
-     PROFILE USER (BARU)
-  ================================================== */
-  const [userName] = useState("David");
-
-  /* ==================================================
-     DELETE MODAL
-  ================================================== */
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
-
-  /* ==================================================
-     SUMMARY
-  ================================================== */
   const [summary, setSummary] = useState({});
 
-  useEffect(() => {
-    const login = localStorage.getItem("isLogin");
+  const [page, setPage] = useState(
+    localStorage.getItem("page") || "dashboard"
+  );
 
-    if (login === "true") {
-      setIsLogin(true);
-    }
+  const [isLogin, setIsLogin] = useState(
+    localStorage.getItem("login") === "true"
+  );
+
+  const [authPage, setAuthPage] = useState("login");
+
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  // 🔥 FILTER (YANG LAMA TETAP)
+  const [filterTrip, setFilterTrip] = useState("");
+  const [searchNama, setSearchNama] = useState("");
+  const [filterBulan, setFilterBulan] = useState("");
+
+  // 🔥 TAMBAHAN (TAHUN)
+  const [filterTahun, setFilterTahun] = useState(new Date().getFullYear());
+
+  // ================= LOAD DATA =================
+  const loadData = async () => {
+    const expenses = await getExpenses();
+    const sum = await getSummary();
+
+    setData(expenses);
+    setSummary(sum);
+  };
+
+  // ================= FILTER DATA =================
+  const filteredData = data
+    .filter(item => filterTrip ? item.trip === filterTrip : true)
+    .filter(item => item.nama.toLowerCase().includes(searchNama.toLowerCase()))
+    .filter(item => {
+      if (!filterBulan) return true;
+      const bulan = new Date(item.tanggal).getMonth() + 1;
+      return bulan === Number(filterBulan);
+    })
+    // 🔥 TAMBAHAN FILTER TAHUN (TIDAK MENGGANGGU YANG LAMA)
+    .filter(item => {
+      if (!filterTahun) return true;
+      const tahun = new Date(item.tanggal).getFullYear();
+      return tahun === Number(filterTahun);
+    });
+
+  const tripOptions = [...new Set(data.map(item => item.trip))];
+
+  // ================= INIT =================
+  useEffect(() => {
+    loadData();
   }, []);
 
-  /* ==================================================
-     GET DATA
-  ================================================== */
-  const getExpenses = async () => {
-    setLoading(true);
-
-    try {
-      const res = await fetch("http://127.0.0.1:5000/expenses");
-      const result = await res.json();
-      setData(result);
-    } catch {
-      toast.error("Gagal mengambil data");
-    }
-
-    setLoading(false);
-  };
-
-  const getSummary = async () => {
-    const res = await fetch("http://127.0.0.1:5000/summary");
-    const result = await res.json();
-    setSummary(result);
-  };
-
   useEffect(() => {
-    if (isLogin) {
-      getExpenses();
-      getSummary();
-    }
+    localStorage.setItem("login", isLogin);
   }, [isLogin]);
 
-  /* ==================================================
-     LOGIN
-  ================================================== */
-  const handleLogin = async () => {
-    try {
-      const res = await fetch("http://127.0.0.1:5000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email,
-          password
-        })
-      });
+  useEffect(() => {
+    localStorage.setItem("page", page);
+  }, [page]);
 
-      const result = await res.json();
+  // ================= AUTH =================
+  if (!isLogin) {
+    return authPage === "login" ? (
+      <Login setIsLogin={setIsLogin} setAuthPage={setAuthPage} />
+    ) : (
+      <Register setAuthPage={setAuthPage} />
+    );
+  }
 
-      if (res.ok) {
-        localStorage.setItem("isLogin", "true");
-        setIsLogin(true);
-        toast.success(result.message);
-      } else {
-        toast.error("Login gagal");
-      }
-    } catch {
-      toast.error("Backend belum jalan");
-    }
-  };
-
-  /* ==================================================
-     REGISTER
-  ================================================== */
-  const handleRegister = async () => {
-    try {
-      const res = await fetch("http://127.0.0.1:5000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          nama: namaUser,
-          email,
-          password
-        })
-      });
-
-      const result = await res.json();
-
-      if (res.ok) {
-        toast.success(result.message);
-        setIsRegister(false);
-      } else {
-        toast.error("Register gagal");
-      }
-    } catch {
-      toast.error("Backend belum jalan");
-    }
-  };
-
-  /* ==================================================
-     LOGOUT
-  ================================================== */
-  const handleLogout = () => {
-    localStorage.removeItem("isLogin");
-    setIsLogin(false);
-    toast.success("Logout berhasil");
-  };
-
-  /* ==================================================
-     SUBMIT
-  ================================================== */
-  const handleSubmit = async () => {
-    if (!nama || !kategori || !jumlah || !tanggal) {
-      toast.warning("Isi field wajib!");
-      return;
-    }
-
-    if (type === "expense" && !trip) {
-      toast.warning("Trip wajib diisi!");
-      return;
-    }
-
-    const payload = {
-      nama,
-      kategori,
-      jumlah: Number(jumlah),
-      tanggal,
-      trip,
-      type
-    };
-
-    if (editId) {
-      await fetch(`http://127.0.0.1:5000/expenses/${editId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      toast.success("Data berhasil diupdate");
-    } else {
-      await fetch("http://127.0.0.1:5000/expenses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
-      toast.success("Data berhasil ditambah");
-    }
-
-    setNama("");
-    setKategori("");
-    setJumlah("");
-    setTanggal("");
-    setTrip("");
-    setType("expense");
-    setEditId(null);
-
-    getExpenses();
-    getSummary();
-  };
-
-  /* ==================================================
-     DELETE
-  ================================================== */
-  const handleDelete = async (id) => {
-    await fetch(`http://127.0.0.1:5000/expenses/${id}`, {
-      method: "DELETE"
-    });
-
-    toast.success("Data berhasil dihapus");
-
-    getExpenses();
-    getSummary();
-  };
-
-  /* ==================================================
-     EDIT
-  ================================================== */
-  const handleEdit = (item) => {
-    setNama(item.nama);
-    setKategori(item.kategori);
-    setJumlah(item.jumlah);
-    setTanggal(item.tanggal);
-    setTrip(item.trip || "");
-    setType(item.type || "expense");
-    setEditId(item.id);
-  };
-
-  /* ==================================================
-     FILTER
-  ================================================== */
-  const filteredData = data.filter((item) => {
-    const cocokSearch =
-      item.nama.toLowerCase().includes(search.toLowerCase()) ||
-      item.kategori.toLowerCase().includes(search.toLowerCase());
-
-    const cocokFilter =
-      filterType === "all" ? true : item.type === filterType;
-
-    return cocokSearch && cocokFilter;
-  });
-
-  /* ==================================================
-     STATISTIK BULANAN (BARU)
-  ================================================== */
-  const monthlyData = data.reduce((acc, item) => {
-    const bulan = item.tanggal?.slice(0, 7);
-
-    if (!acc[bulan]) {
-      acc[bulan] = 0;
-    }
-
-    acc[bulan] += Number(item.jumlah);
-
-    return acc;
-  }, {});
-
-  /* ==================================================
-     EXPORT CSV
-  ================================================== */
-  const exportCSV = () => {
-    const header = [
-      "Nama",
-      "Kategori",
-      "Jumlah",
-      "Tanggal",
-      "Trip",
-      "Type"
-    ];
-
-    const rows = filteredData.map((item) => [
-      item.nama,
-      item.kategori,
-      item.jumlah,
-      item.tanggal,
-      item.trip,
-      item.type
-    ]);
-
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      [header, ...rows]
-        .map((e) => e.join(","))
-        .join("\n");
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "laporan-budget.csv");
-
-    document.body.appendChild(link);
-    link.click();
-  };
-
-  /* ==================================================
-     EXPORT PDF
-  ================================================== */
-  const exportPDF = () => {
-    const doc = new jsPDF();
-
-    doc.setFontSize(18);
-    doc.text("Smart Budget Report", 14, 20);
-
-    doc.setFontSize(12);
-    doc.text(`Total Income : Rp ${summary.total_income || 0}`, 14, 35);
-    doc.text(`Total Expense : Rp ${summary.total_expense || 0}`, 14, 43);
-    doc.text(`Saldo : Rp ${summary.saldo || 0}`, 14, 51);
-
-    const tableData = filteredData.map((item) => [
-      item.nama,
-      item.kategori,
-      item.jumlah,
-      item.tanggal,
-      item.trip,
-      item.type
-    ]);
-
-    autoTable(doc, {
-      startY: 60,
-      head: [["Nama", "Kategori", "Jumlah", "Tanggal", "Trip", "Type"]],
-      body: tableData
-    });
-
-    doc.save("laporan-budget.pdf");
-
-    toast.success("PDF berhasil didownload");
-  };
-
-  const COLORS = ["#7f5af0", "#ff4d4d"];
-
-  const pieData = [
-    {
-      name: "Expense",
-      value: summary.total_expense || 0
-    },
-    {
-      name: "Income",
-      value: summary.total_income || 0
-    }
-  ];
-
-  const barData = filteredData.map((item) => ({
-    nama: item.nama,
-    jumlah: item.jumlah
-  }));
-
+  // ================= MAIN =================
   return (
-    <div className={`container ${darkMode ? "dark" : ""}`}>
-      {!isLogin ? (
-        <div className="login-card">
-          <h2>{isRegister ? "Register" : "Login"}</h2>
+    <div className="container">
 
-          {isRegister && (
-            <input
-              type="text"
-              placeholder="Nama"
-              onChange={(e) => setNamaUser(e.target.value)}
-            />
-          )}
+      <Sidebar 
+        setPage={setPage} 
+        setIsLogin={setIsLogin}
+        open={sidebarOpen}
+        setOpen={setSidebarOpen}
+        page={page}
+      />
 
-          <input
-            type="email"
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
+      <div 
+        className="main"
+        style={{
+          marginLeft: sidebarOpen ? "220px" : "65px",
+          transition: "0.3s"
+        }}
+      >
 
-          <div className="password-box">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+        {/* ================= DASHBOARD ================= */}
+        {page === "dashboard" && (
+          <>
+            <Summary summary={summary} data={data} />
+            <Charts data={data} />
+            <Insight data={data} />
+          </>
+        )}
 
-            <span
-              className="eye"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "🙈" : "👁"}
-            </span>
-          </div>
+        {/* ================= DATA ================= */}
+        {page === "data" && (
+          <>
 
-          <button onClick={isRegister ? handleRegister : handleLogin}>
-            {isRegister ? "Register" : "Login"}
-          </button>
+            {/* 🔥 FILTER BAR (VERSI RAPI) */}
+            <div className="filter-bar">
 
-          <p
-            className="switch"
-            onClick={() => setIsRegister(!isRegister)}
-          >
-            {isRegister
-              ? "Sudah punya akun? Login"
-              : "Belum punya akun? Register"}
-          </p>
-        </div>
-      ) : (
-        <>
-          <div className="sidebar">
-            <h2>💰 Smart Budget</h2>
-
-            {/* PROFILE USER */}
-            <p className="profile-user">
-              Halo, {userName} 👋
-            </p>
-
-            <button onClick={() => setDarkMode(!darkMode)}>
-              {darkMode ? "☀ Light" : "🌙 Dark"}
-            </button>
-
-            <button onClick={handleLogout}>Logout</button>
-          </div>
-
-          <div className="main">
-            <div className="summary">
-              <div className="card-summary">
-                <h3>Total Expense</h3>
-                <p>Rp {summary.total_expense || 0}</p>
-              </div>
-
-              <div className="card-summary">
-                <h3>Total Income</h3>
-                <p>Rp {summary.total_income || 0}</p>
-              </div>
-
-              <div className="card-summary">
-                <h3>Saldo</h3>
-                <p>Rp {summary.saldo || 0}</p>
-              </div>
-            </div>
-
-            <div className="chart-section">
-              <div className="chart-box">
-                <h3>Income vs Expense</h3>
-
-                <PieChart width={300} height={250}>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    dataKey="value"
-                    label
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell
-                        key={index}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-
-                  <Tooltip />
-                  <Legend />
-                </PieChart>
-              </div>
-
-              <div className="chart-box">
-                <h3>Nominal Transaksi</h3>
-
-                <BarChart width={420} height={250} data={barData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="nama" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="jumlah" fill="#7f5af0" />
-                </BarChart>
-              </div>
-            </div>
-
-            {/* STATISTIK BULANAN */}
-            <div className="monthly-box">
-              <h3>📊 Statistik Bulanan</h3>
-
-              {Object.keys(monthlyData).length === 0 ? (
-                <p>Belum ada data</p>
-              ) : (
-                Object.entries(monthlyData).map(([bulan, total]) => (
-                  <div className="month-row" key={bulan}>
-                    <span>{bulan}</span>
-                    <span>Rp {total}</span>
-                  </div>
-                ))
-              )}
-            </div>
-
-            <div className="top-tools">
+              {/* SEARCH */}
               <input
                 type="text"
-                placeholder="Cari transaksi..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Cari nama..."
+                value={searchNama}
+                onChange={(e) => setSearchNama(e.target.value)}
               />
 
-              <select
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-              >
-                <option value="all">Semua</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
+              {/* TRIP */}
+              <select onChange={(e) => setFilterTrip(e.target.value)}>
+                <option value="">Semua Trip</option>
+                {tripOptions.map((trip, index) => (
+                  <option key={index} value={trip}>
+                    {trip}
+                  </option>
+                ))}
               </select>
 
-              <button onClick={exportCSV}>Export CSV</button>
-              <button onClick={exportPDF}>Export PDF</button>
+              {/* BULAN */}
+              <select onChange={(e) => setFilterBulan(e.target.value)}>
+                <option value="">Semua Bulan</option>
+                <option value="1">Januari</option>
+                <option value="2">Februari</option>
+                <option value="3">Maret</option>
+                <option value="4">April</option>
+                <option value="5">Mei</option>
+                <option value="6">Juni</option>
+                <option value="7">Juli</option>
+                <option value="8">Agustus</option>
+                <option value="9">September</option>
+                <option value="10">Oktober</option>
+                <option value="11">November</option>
+                <option value="12">Desember</option>
+              </select>
+
+              {/* 🔥 TAHUN (BARU) */}
+              <input
+                type="number"
+                value={filterTahun}
+                onChange={(e) => setFilterTahun(e.target.value)}
+              />
+
+              <button className="filter-btn">🔍 Filter</button>
+
             </div>
 
-            <div className="content">
-              <div className="form-box">
-                <h3>{editId ? "Edit Data" : "Tambah Data"}</h3>
+            <ExpenseForm refresh={loadData} />
+            <ExpenseList data={filteredData} refresh={loadData} />
 
-                <input
-                  type="text"
-                  placeholder="Nama"
-                  value={nama}
-                  onChange={(e) => setNama(e.target.value)}
-                />
+          </>
+        )}
 
-                <input
-                  type="text"
-                  placeholder="Kategori"
-                  value={kategori}
-                  onChange={(e) => setKategori(e.target.value)}
-                />
+        {/* ================= PREDICT ================= */}
+        {page === "predict" && (
+          <Prediction refresh={loadData} />
+        )}
 
-                <input
-                  type="number"
-                  placeholder="Jumlah"
-                  value={jumlah}
-                  onChange={(e) => setJumlah(e.target.value)}
-                />
-
-                <select
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                >
-                  <option value="expense">Expense</option>
-                  <option value="income">Income</option>
-                </select>
-
-                <input
-                  type="date"
-                  value={tanggal}
-                  onChange={(e) => setTanggal(e.target.value)}
-                />
-
-                {type === "expense" && (
-                  <input
-                    type="text"
-                    placeholder="Trip"
-                    value={trip}
-                    onChange={(e) => setTrip(e.target.value)}
-                  />
-                )}
-
-                <button onClick={handleSubmit}>
-                  {editId ? "Update" : "Tambah"}
-                </button>
-              </div>
-
-              <div className="list">
-                {loading ? (
-                  <div className="empty-box">
-                    <h3>Loading data...</h3>
-                    <p>Mohon tunggu sebentar</p>
-                  </div>
-                ) : filteredData.length === 0 ? (
-                  <div className="empty-box">
-                    <h3>Belum ada transaksi</h3>
-                    <p>Tambahkan data pertama kamu 🚀</p>
-                  </div>
-                ) : (
-                  filteredData.map((item) => (
-                    <div key={item.id} className="card">
-                      <p><b>{item.nama}</b></p>
-                      <p>{item.kategori}</p>
-                      <p>Rp {item.jumlah}</p>
-                      <p>{item.tanggal}</p>
-                      <p>{item.trip}</p>
-                      <p>{item.type}</p>
-
-                      <button
-                        className="edit"
-                        onClick={() => handleEdit(item)}
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        className="delete"
-                        onClick={() => {
-                          setDeleteId(item.id);
-                          setShowDeleteModal(true);
-                        }}
-                      >
-                        Hapus
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-
-      {showDeleteModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <h3>Yakin mau hapus?</h3>
-
-            <div className="modal-action">
-              <button
-                className="cancel-btn"
-                onClick={() => setShowDeleteModal(false)}
-              >
-                Batal
-              </button>
-
-              <button
-                className="delete-btn"
-                onClick={() => {
-                  handleDelete(deleteId);
-                  setShowDeleteModal(false);
-                }}
-              >
-                Hapus
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        theme="colored"
-      />
+      </div>
     </div>
   );
 }
