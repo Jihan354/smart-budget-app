@@ -13,37 +13,81 @@ export default function Summary({ summary, data }) {
       if (!kategoriMap[item.kategori]) {
         kategoriMap[item.kategori] = 0;
       }
+
       kategoriMap[item.kategori] += item.jumlah;
     }
   });
 
+  // ================= FAVORITE DESTINATION =================
+  const tripMap = {};
+
+  data.forEach((item) => {
+    if (!tripMap[item.trip]) {
+      tripMap[item.trip] = 0;
+    }
+
+    tripMap[item.trip]++;
+  });
+
+  const favoriteTrip =
+    Object.keys(tripMap).length > 0
+      ? Object.entries(tripMap).sort((a, b) => b[1] - a[1])[0][0]
+      : "No Trip";
+
+  // ================= TOP SPENDING CATEGORY =================
+  const topCategory =
+    Object.keys(kategoriMap).length > 0
+      ? Object.entries(kategoriMap).sort((a, b) => b[1] - a[1])[0][0]
+      : "No Category";
+
+  // ================= BUDGET STATUS =================
+  let budgetStatus = "Safe";
+
+  if ((summary.total_expense || 0) > 10000000) {
+    budgetStatus = "Over Budget";
+  } else if ((summary.total_expense || 0) > 5000000) {
+    budgetStatus = "Warning";
+  }
+
   return (
     <div>
 
-      {/* ================= SUMMARY UTAMA ================= */}
+      {/* ================= SUMMARY ================= */}
       <div className="summary">
+
+        {/* TOTAL EXPENSES */}
         <div className="card">
-          <h4>Expense</h4>
+          <h4>Total Expenses</h4>
           <p>Rp {formatRupiah(summary.total_expense || 0)}</p>
         </div>
 
+        {/* FAVORITE DESTINATION */}
         <div className="card">
-          <h4>Income</h4>
-          <p>Rp {formatRupiah(summary.total_income || 0)}</p>
+          <h4>Favorite Destination</h4>
+          <p>{favoriteTrip}</p>
         </div>
 
+        {/* TOP CATEGORY */}
         <div className="card">
-          <h4>Saldo</h4>
-          <p>Rp {formatRupiah(summary.saldo || 0)}</p>
+          <h4>Top Spending Category</h4>
+          <p>{topCategory}</p>
         </div>
+
+        {/* BUDGET STATUS */}
+        <div className="card">
+          <h4>Budget Status</h4>
+          <p>{budgetStatus}</p>
+        </div>
+
       </div>
 
       {/* ================= SUMMARY PER KATEGORI ================= */}
       <div className="card">
-        <h4>Pengeluaran per Kategori</h4>
+
+        <h4>Expenses by Category</h4>
 
         {Object.keys(kategoriMap).length === 0 ? (
-          <p>Belum ada data</p>
+          <p>No Data</p>
         ) : (
           Object.entries(kategoriMap).map(([kategori, total]) => (
             <p key={kategori}>
@@ -51,7 +95,9 @@ export default function Summary({ summary, data }) {
             </p>
           ))
         )}
+
       </div>
+
     </div>
   );
 }

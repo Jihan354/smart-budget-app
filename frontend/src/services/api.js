@@ -90,3 +90,16 @@ export const registerUser = async (data) => {
 
   return res.json();
 };
+
+// ================= AI WISATA =================
+export const predictWisata = async (data) => {
+  const res = await fetch("http://127.0.0.1:5000/predict-wisata", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  return res.json();
+};

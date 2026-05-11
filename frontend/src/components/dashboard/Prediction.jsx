@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { predictBudget, addExpense } from "../../services/api";
+import { predictBudget } from "../../services/api";
 
-export default function Prediction({ refresh }) {
+export default function Prediction() {
 
   // ================= STATE =================
   const [days, setDays] = useState(1);
+  const [destination, setDestination] = useState("Jakarta");
+  const [travelers, setTravelers] = useState(1);
   const [budgetType, setBudgetType] = useState("medium");
-  const [destination, setDestination] = useState("bali");
   const [result, setResult] = useState(null);
 
-  //  TAMBAHAN TANGGAL
-  const [tanggal, setTanggal] = useState("");
 
   // ================= FORMAT RUPIAH =================
   const formatRupiah = (angka) => {
@@ -21,10 +20,11 @@ export default function Prediction({ refresh }) {
   const handlePredict = async () => {
     try {
       const res = await predictBudget({
-        days,
-        budget_type: budgetType,
-        destination
-      });
+      destination,
+      days,
+      travelers,
+      budget_type: budgetType
+});
 
       setResult(res);
     } catch (error) {
@@ -32,72 +32,10 @@ export default function Prediction({ refresh }) {
     }
   };
 
-  // ================= AUTO SAVE =================
-  const handleSavePrediction = async () => {
-
-    //  VALIDASI
-    if (!result) return;
-
-    if (!tanggal) {
-      alert("Pilih tanggal dulu!");
-      return;
-    }
-
-    try {
-      // Transport
-      await addExpense({
-        nama: "Transport",
-        kategori: "Transport",
-        jumlah: result.transport,
-        tanggal: tanggal,
-        trip: destination,
-        type: "expense"
-      });
-
-      // Hotel
-      await addExpense({
-        nama: "Hotel",
-        kategori: "Hotel",
-        jumlah: result.hotel,
-        tanggal: tanggal,
-        trip: destination,
-        type: "expense"
-      });
-
-      // Food
-      await addExpense({
-        nama: "Food",
-        kategori: "Food",
-        jumlah: result.food,
-        tanggal: tanggal,
-        trip: destination,
-        type: "expense"
-      });
-
-      // Activity
-      await addExpense({
-        nama: "Activity",
-        kategori: "Ticket",
-        jumlah: result.activity,
-        tanggal: tanggal,
-        trip: destination,
-        type: "expense"
-      });
-
-      alert("Budget berhasil ditambahkan!");
-
-      //  REFRESH DATA 
-      refresh();
-
-    } catch (error) {
-      console.error("Error save:", error);
-    }
-  };
-
   return (
     <div className="card prediction-card">
 
-      <h3> Prediksi Budget</h3>
+      <h3> Trip Budget Prediction </h3>
 
       {/* ================= FORM ================= */}
       <div className="prediction-form">
@@ -111,32 +49,36 @@ export default function Prediction({ refresh }) {
           onChange={(e) => setDays(e.target.value)}
         />
 
-        {/* TANGGAL */}
+        {/* TRAVELERS */}
         <input
-          type="date"
-          value={tanggal}
-          onChange={(e) => setTanggal(e.target.value)}
+          type="number"
+          min="1"
+         value={travelers}
+         onChange={(e) => setTravelers(e.target.value)}
+        placeholder="Jumlah Travelers"
         />
 
         {/* DESTINATION */}
         <select
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-        >
-          <option value="bali">Bali (Murah)</option>
-          <option value="jakarta">Jakarta (Sedang)</option>
-          <option value="luar_negeri">Luar Negeri (Mahal)</option>
-        </select>
+  value={destination}
+  onChange={(e) => setDestination(e.target.value)}
+>
+  <option value="Jakarta">Jakarta</option>
+  <option value="Bandung">Bandung</option>
+  <option value="Yogyakarta">Yogyakarta</option>
+  <option value="Semarang">Semarang</option>
+  <option value="Surabaya">Surabaya</option>
+</select>
 
-        {/* BUDGET */}
-        <select
-          value={budgetType}
-          onChange={(e) => setBudgetType(e.target.value)}
-        >
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
+{/* BUDGET TYPE */}
+<select
+  value={budgetType}
+  onChange={(e) => setBudgetType(e.target.value)}
+>
+  <option value="low">Low</option>
+  <option value="medium">Medium</option>
+  <option value="luxury">Luxury</option>
+</select>
 
         {/* BUTTON */}
         <button onClick={handlePredict}>
@@ -146,30 +88,27 @@ export default function Prediction({ refresh }) {
       </div>
 
       {/* ================= HASIL ================= */}
-      {result && (
-        <div className="prediction-result">
+{result && (
+  <div className="prediction-result">
 
-          <p>✈️ Transport: Rp {formatRupiah(result.transport)}</p>
-          <p>🏨 Hotel: Rp {formatRupiah(result.hotel)}</p>
-          <p>🍜 Food: Rp {formatRupiah(result.food)}</p>
-          <p>🎫 Activity: Rp {formatRupiah(result.activity)}</p>
+    <p>📍 Destination: {result.destination}</p>
 
-          <hr />
+    <p>📅 Trip Days: {result.days}</p>
 
-          <p className="prediction-total">
-            Total: Rp {formatRupiah(result.total)}
-          </p>
+    <p>👥 Number of Travelers: {result.travelers}</p>
 
-          <button
-            className="use-budget-btn"
-            onClick={handleSavePrediction}
-          >
-            Gunakan Budget Ini
-          </button>
+    <p>💼 Budget Type: {result.budget_type}</p>
 
-        </div>
-      )}
+    <hr />
+
+    <p className="prediction-total">
+      Estimated Budget: Rp {formatRupiah(result.predicted_budget)}
+    </p>
+
+  </div>
+)}
 
     </div>
   );
 }
+

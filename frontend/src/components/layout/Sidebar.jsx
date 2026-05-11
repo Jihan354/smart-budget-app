@@ -16,7 +16,7 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
       {/* ================= LOGO ================= */}
       {open && (
         <h2 className="logo">
-           Smart <span>Budget</span>
+          Smart <span>Budget</span>
         </h2>
       )}
 
@@ -24,27 +24,35 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
       <div className="menu">
 
         {/* DASHBOARD */}
-        <div 
+        <div
           className={page === "dashboard" ? "active" : ""}
           onClick={() => setPage("dashboard")}
         >
-           {open && "Dashboard"}
+          {open && "Dashboard"}
         </div>
 
-        {/* DATA */}
-        <div 
-          className={page === "data" ? "active" : ""}
-          onClick={() => setPage("data")}
+        {/* PLAN TRIP */}
+        <div
+          className={page === "planTrip" ? "active" : ""}
+          onClick={() => setPage("planTrip")}
         >
-           {open && "Data"}
+          {open && "Plan Trip"}
         </div>
 
-        {/* PREDIKSI */}
-        <div 
-          className={page === "predict" ? "active" : ""}
-          onClick={() => setPage("predict")}
+        {/* EXPENSES */}
+        <div
+          className={page === "expenses" ? "active" : ""}
+          onClick={() => setPage("expenses")}
         >
-           {open && "Prediksi"}
+          {open && "Expenses"}
+        </div>
+
+        {/* ANALYTICS */}
+        <div
+          className={page === "analytics" ? "active" : ""}
+          onClick={() => setPage("analytics")}
+        >
+          {open && "Analytics"}
         </div>
 
       </div>

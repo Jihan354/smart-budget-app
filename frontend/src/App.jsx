@@ -3,7 +3,6 @@ import { getExpenses, getSummary } from "./services/api";
 
 import Sidebar from "./components/layout/Sidebar";
 import Summary from "./components/dashboard/Summary";
-import Prediction from "./components/dashboard/Prediction";
 import ExpenseForm from "./components/Expense/ExpenseForm";
 import ExpenseList from "./components/Expense/ExpenseList";
 import Charts from "./components/dashboard/Charts";
@@ -11,7 +10,8 @@ import Insight from "./components/dashboard/Insight";
 
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-
+import TripPlanner from "./components/dashboard/TripPlanner";
+import Prediction from "./components/dashboard/Prediction";
 import "./App.css";
 
 function App() {
@@ -113,13 +113,11 @@ function App() {
         {page === "dashboard" && (
           <>
             <Summary summary={summary} data={data} />
-            <Charts data={data} />
-            <Insight data={data} />
           </>
         )}
 
         {/* ================= DATA ================= */}
-        {page === "data" && (
+        {page === "expenses" && (
           <>
 
             {/* 🔥 FILTER BAR (VERSI RAPI) */}
@@ -177,10 +175,23 @@ function App() {
           </>
         )}
 
-        {/* ================= PREDICT ================= */}
-        {page === "predict" && (
-          <Prediction refresh={loadData} />
-        )}
+        {/* ================= PLAN TRIP ================= */}
+{page === "planTrip" && (
+  <TripPlanner refresh={loadData} />
+)}
+
+{/* ================= AI PREDICTION ================= */}
+{page === "prediction" && (
+  <Prediction refresh={loadData} />
+)}
+
+{/* ================= ANALYTICS ================= */}
+{page === "analytics" && (
+  <>
+    <Charts data={data} />
+    <Insight data={data} />
+  </>
+)}
 
       </div>
     </div>

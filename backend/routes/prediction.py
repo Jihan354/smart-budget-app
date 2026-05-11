@@ -1,57 +1,84 @@
 from flask import Blueprint, request, jsonify
+import pandas as pd
+import joblib
 
 prediction_bp = Blueprint("prediction", __name__)
 
+# ================= LOAD MODEL =================
+tourism_model = joblib.load("models/tourism_model.joblib")
+budget_model = joblib.load("models/budget_model.joblib")
+
+# ================= LOAD DATASET TOURISM =================
+tourism_df = pd.read_csv("indonesia_tourism_clean_for_ai (1).csv")
+
+
+# =========================================================
+# AI BUDGET PREDICTION
+# =========================================================
 @prediction_bp.route("/predict", methods=["POST"])
 def predict():
+
     data = request.json
 
-    days = int(data.get("days", 1))
-    destination = data.get("destination", "bali")
-    budget_type = data.get("budget_type", "medium")
+    destination = data.get("destination")
+    days = int(data.get("days"))
+    travelers = int(data.get("travelers"))
+    budget_type = data.get("budget_type")
 
-    # ================= VALIDASI =================
-    if days < 1 or days > 30:
-        return jsonify({"error": "Days harus 1-30"}), 400
+    # ================= DATAFRAME =================
+    input_data = pd.DataFrame([{
+        "destination": destination,
+        "days": days,
+        "travelers": travelers,
+        "budget_type": budget_type
+    }])
 
-    # ================= BASE BIAYA =================
-    # update: breakdown travel (lebih realistis)
-    if destination == "bali":
-        transport = 400000
-        hotel_per_day = 300000
-        food_per_day = 100000
-        activity_per_day = 50000
-    elif destination == "jakarta":
-        transport = 200000
-        hotel_per_day = 250000
-        food_per_day = 80000
-        activity_per_day = 40000
-    else:  # luar negeri
-        transport = 1500000
-        hotel_per_day = 700000
-        food_per_day = 200000
-        activity_per_day = 150000
-
-    # ================= MULTIPLIER =================
-    if budget_type == "low":
-        multiplier = 0.8
-    elif budget_type == "high":
-        multiplier = 1.5
-    else:
-        multiplier = 1.0
-
-    # ================= HITUNG =================
-    transport_total = int(transport * multiplier)
-    hotel_total = int(hotel_per_day * days * multiplier)
-    food_total = int(food_per_day * days * multiplier)
-    activity_total = int(activity_per_day * days * multiplier)
-
-    total = transport_total + hotel_total + food_total + activity_total
+    # ================= PREDICT AI =================
+    prediction = budget_model.predict(input_data)[0]
 
     return jsonify({
-        "transport": transport_total,
-        "hotel": hotel_total,
-        "food": food_total,
-        "activity": activity_total,
-        "total": total
+        "destination": destination,
+        "days": days,
+        "travelers": travelers,
+        "budget_type": budget_type,
+        "predicted_budget": int(prediction)
     })
+
+
+# =========================================================
+# AI WISATA RECOMMENDATION
+# =========================================================
+@prediction_bp.route("/predict-wisata", methods=["POST"])
+def predict_wisata():
+
+    data = request.json
+
+    city = data.get("city")
+    category = data.get("category")
+    price = int(data.get("price"))
+
+    # ================= FILTER DATA =================
+    filtered = tourism_df[
+        (tourism_df["city"] == city) &
+        (tourism_df["category"] == category) &
+        (tourism_df["price"] <= price)
+    ]
+
+      # ================= HAPUS DUPLIKAT =================
+    filtered = filtered.drop_duplicates(subset=["place_name"])
+
+    # ================= SORT RATING =================
+    filtered = filtered.sort_values(by="rating", ascending=False)
+
+    # ================= AMBIL TOP 5 =================
+    recommendations = filtered.head(5)
+
+    result = recommendations[[
+        "place_name",
+        "category",
+        "city",
+        "price",
+        "rating"
+    ]].to_dict(orient="records")
+
+    return jsonify(result)
