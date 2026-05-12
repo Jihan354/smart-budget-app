@@ -1,86 +1,146 @@
 import { useEffect, useState } from "react";
 import { getExpenses, getSummary } from "./services/api";
 
+// =========================================================
+// LAYOUT
+// =========================================================
 import Sidebar from "./components/layout/Sidebar";
-import Summary from "./components/dashboard/Summary";
-import ExpenseForm from "./components/Expense/ExpenseForm";
-import ExpenseList from "./components/Expense/ExpenseList";
-import Charts from "./components/dashboard/Charts";
-import Insight from "./components/dashboard/Insight";
 
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
+// =========================================================
+// DASHBOARD
+// =========================================================
+import Dashboard from "./components/dashboard/Dashboard";
 import TripPlanner from "./components/dashboard/TripPlanner";
 import Prediction from "./components/dashboard/Prediction";
+
+// =========================================================
+// EXPENSE
+// =========================================================
+import ExpenseForm from "./components/Expense/ExpenseForm";
+import ExpenseList from "./components/Expense/ExpenseList";
+
+// =========================================================
+// AUTH
+// =========================================================
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+
+// =========================================================
+// STYLE
+// =========================================================
 import "./App.css";
 
 function App() {
-
-  // ================= STATE =================
+  // =========================================================
+  // MAIN STATE
+  // =========================================================
   const [data, setData] = useState([]);
+
   const [summary, setSummary] = useState({});
 
-  const [page, setPage] = useState(
-    localStorage.getItem("page") || "dashboard"
-  );
+  // =========================================================
+  // PAGE STATE
+  // =========================================================
+  const [page, setPage] = useState(localStorage.getItem("page") || "dashboard");
 
+  // =========================================================
+  // AUTH STATE
+  // =========================================================
   const [isLogin, setIsLogin] = useState(
-    localStorage.getItem("login") === "true"
+    localStorage.getItem("login") === "true",
   );
 
   const [authPage, setAuthPage] = useState("login");
 
+  // =========================================================
+  // SIDEBAR STATE
+  // =========================================================
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // 🔥 FILTER (YANG LAMA TETAP)
+  // =========================================================
+  // FILTER STATE
+  // =========================================================
   const [filterTrip, setFilterTrip] = useState("");
+
   const [searchNama, setSearchNama] = useState("");
+
   const [filterBulan, setFilterBulan] = useState("");
 
-  // 🔥 TAMBAHAN (TAHUN)
-  const [filterTahun, setFilterTahun] = useState(new Date().getFullYear());
+  const [filterTahun, setFilterTahun] = useState("");
 
-  // ================= LOAD DATA =================
+  // =========================================================
+  // LOAD DATA
+  // =========================================================
   const loadData = async () => {
     const expenses = await getExpenses();
+
     const sum = await getSummary();
 
     setData(expenses);
+
     setSummary(sum);
   };
 
-  // ================= FILTER DATA =================
+  // =========================================================
+  // FILTER DATA
+  // =========================================================
   const filteredData = data
-    .filter(item => filterTrip ? item.trip === filterTrip : true)
-    .filter(item => item.nama.toLowerCase().includes(searchNama.toLowerCase()))
-    .filter(item => {
+
+    // FILTER TRIP
+    .filter((item) => (filterTrip ? item.trip === filterTrip : true))
+
+    // SEARCH NAMA
+    .filter((item) =>
+      item.nama.toLowerCase().includes(searchNama.toLowerCase()),
+    )
+
+    // FILTER BULAN
+    .filter((item) => {
       if (!filterBulan) return true;
-      const bulan = new Date(item.tanggal).getMonth() + 1;
+
+      const bulan = new Date(item.start_date).getMonth() + 1;
+
       return bulan === Number(filterBulan);
     })
-    // 🔥 TAMBAHAN FILTER TAHUN (TIDAK MENGGANGGU YANG LAMA)
-    .filter(item => {
+
+    // FILTER TAHUN
+    .filter((item) => {
       if (!filterTahun) return true;
-      const tahun = new Date(item.tanggal).getFullYear();
+
+      const tahun = new Date(item.start_date).getFullYear();
+
       return tahun === Number(filterTahun);
     });
 
-  const tripOptions = [...new Set(data.map(item => item.trip))];
+  // =========================================================
+  // TRIP OPTIONS
+  // =========================================================
+  const tripOptions = [...new Set(data.map((item) => item.trip))];
 
-  // ================= INIT =================
+  // =========================================================
+  // INITIAL LOAD
+  // =========================================================
   useEffect(() => {
     loadData();
   }, []);
 
+  // =========================================================
+  // SAVE LOGIN
+  // =========================================================
   useEffect(() => {
     localStorage.setItem("login", isLogin);
   }, [isLogin]);
 
+  // =========================================================
+  // SAVE PAGE
+  // =========================================================
   useEffect(() => {
     localStorage.setItem("page", page);
   }, [page]);
 
-  // ================= AUTH =================
+  // =========================================================
+  // AUTH CHECK
+  // =========================================================
   if (!isLogin) {
     return authPage === "login" ? (
       <Login setIsLogin={setIsLogin} setAuthPage={setAuthPage} />
@@ -89,40 +149,63 @@ function App() {
     );
   }
 
-  // ================= MAIN =================
+  // =========================================================
+  // MAIN APP
+  // =========================================================
   return (
     <div className="container">
-
-      <Sidebar 
-        setPage={setPage} 
+      {/* ===================================================== */}
+      {/* SIDEBAR */}
+      {/* ===================================================== */}
+      <Sidebar
+        setPage={setPage}
         setIsLogin={setIsLogin}
         open={sidebarOpen}
         setOpen={setSidebarOpen}
         page={page}
       />
 
-      <div 
+      {/* ===================================================== */}
+      {/* MAIN CONTENT */}
+      {/* ===================================================== */}
+      <div
         className="main"
         style={{
           marginLeft: sidebarOpen ? "220px" : "65px",
-          transition: "0.3s"
+          transition: "0.3s",
         }}
       >
+        {/* ================================================= */}
+        {/* DASHBOARD */}
+        {/* ================================================= */}
+        {page === "dashboard" && <Dashboard summary={summary} data={data} />}
 
-        {/* ================= DASHBOARD ================= */}
-        {page === "dashboard" && (
-          <>
-            <Summary summary={summary} data={data} />
-          </>
-        )}
+        {/* ================================================= */}
+        {/* PLAN TRIP */}
+        {/* ================================================= */}
+        {page === "planTrip" && <TripPlanner refresh={loadData} />}
 
-        {/* ================= DATA ================= */}
+        {/* ================================================= */}
+        {/* EXPENSES */}
+        {/* ================================================= */}
         {page === "expenses" && (
           <>
+            {/* ============================================= */}
+            {/* HEADER */}
+            {/* ============================================= */}
+            <div className="card">
+              <h3>Travel Expense Manager</h3>
 
-            {/* 🔥 FILTER BAR (VERSI RAPI) */}
+              <p>
+                Track and manage your travel expenses based on trip destination
+                and category.
+              </p>
+            </div>
+
+            {/* ============================================= */}
+            {/* FILTER BAR */}
+            {/* ============================================= */}
             <div className="filter-bar">
-
               {/* SEARCH */}
               <input
                 type="text"
@@ -131,9 +214,10 @@ function App() {
                 onChange={(e) => setSearchNama(e.target.value)}
               />
 
-              {/* TRIP */}
+              {/* FILTER TRIP */}
               <select onChange={(e) => setFilterTrip(e.target.value)}>
                 <option value="">Semua Trip</option>
+
                 {tripOptions.map((trip, index) => (
                   <option key={index} value={trip}>
                     {trip}
@@ -141,9 +225,10 @@ function App() {
                 ))}
               </select>
 
-              {/* BULAN */}
+              {/* FILTER BULAN */}
               <select onChange={(e) => setFilterBulan(e.target.value)}>
                 <option value="">Semua Bulan</option>
+
                 <option value="1">Januari</option>
                 <option value="2">Februari</option>
                 <option value="3">Maret</option>
@@ -158,41 +243,30 @@ function App() {
                 <option value="12">Desember</option>
               </select>
 
-              {/* 🔥 TAHUN (BARU) */}
+              {/* FILTER TAHUN */}
               <input
                 type="number"
                 value={filterTahun}
                 onChange={(e) => setFilterTahun(e.target.value)}
               />
-
-              <button className="filter-btn">🔍 Filter</button>
-
             </div>
 
+            {/* ============================================= */}
+            {/* EXPENSE FORM */}
+            {/* ============================================= */}
             <ExpenseForm refresh={loadData} />
-            <ExpenseList data={filteredData} refresh={loadData} />
 
+            {/* ============================================= */}
+            {/* EXPENSE LIST */}
+            {/* ============================================= */}
+            <ExpenseList data={filteredData} refresh={loadData} />
           </>
         )}
 
-        {/* ================= PLAN TRIP ================= */}
-{page === "planTrip" && (
-  <TripPlanner refresh={loadData} />
-)}
-
-{/* ================= AI PREDICTION ================= */}
-{page === "prediction" && (
-  <Prediction refresh={loadData} />
-)}
-
-{/* ================= ANALYTICS ================= */}
-{page === "analytics" && (
-  <>
-    <Charts data={data} />
-    <Insight data={data} />
-  </>
-)}
-
+        {/* ================================================= */}
+        {/* AI PREDICTION */}
+        {/* ================================================= */}
+        {page === "prediction" && <Prediction refresh={loadData} />}
       </div>
     </div>
   );

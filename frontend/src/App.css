@@ -1,24 +1,24 @@
 /* ===============================
 RESET
 =============================== */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-  font-family:Arial, sans-serif;
-  background:#f4f6fb;
-  color:#333;
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6fb;
+  color: #333;
 }
 
 /* ===============================
 LAYOUT
 =============================== */
-.container{
-  display:flex;
-  min-height:100vh;
+.container {
+  display: flex;
+  min-height: 100vh;
 }
 
 /* ===============================
@@ -38,21 +38,21 @@ SIDEBAR
 }
 
 /* closed */
-.sidebar.closed{
+.sidebar.closed {
   width: 65px;
-  align-items:center;
+  align-items: center;
 }
 
 /* ===============================
 TOGGLE
 =============================== */
-.toggle-btn{
-  background:#fff;
-  border:none;
-  padding:6px 10px;
-  border-radius:6px;
-  cursor:pointer;
-  margin-bottom:15px;
+.toggle-btn {
+  background: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 15px;
 }
 
 /* ===============================
@@ -75,23 +75,23 @@ LOGO
 /* ===============================
 MENU
 =============================== */
-.menu{
-  width:100%;
+.menu {
+  width: 100%;
 }
 
-.menu div{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:10px;
-  margin-bottom:6px;
-  border-radius:8px;
-  cursor:pointer;
-  font-size:14px;
+.menu div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-.menu div:hover{
-  background:rgba(255,255,255,0.2);
+.menu div:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* ===============================
@@ -119,7 +119,7 @@ MAIN (FIX PENTING)
   display: flex;
   flex-direction: column;
   gap: 15px;
-  width: 100%;          /* 🔥 wajib full */
+  width: 100%; /* 🔥 wajib full */
   padding: 20px;
   min-height: 100vh;
 }
@@ -132,42 +132,42 @@ MAIN (FIX PENTING)
 /* ===============================
 SUMMARY
 =============================== */
-.summary{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-bottom:20px;
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
-.card-summary{
-  background:#fff;
-  padding:18px;
-  border-radius:14px;
-  box-shadow:0 4px 10px rgba(0,0,0,.1);
-  text-align:center;
+.card-summary {
+  background: #fff;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.card-summary h3{
-  font-size:14px;
-  color:#666;
-  margin-bottom:8px;
+.card-summary h3 {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
 }
 
-.card-summary p{
-  font-size:22px;
-  font-weight:bold;
-  color:#7f5af0;
+.card-summary p {
+  font-size: 22px;
+  font-weight: bold;
+  color: #7f5af0;
 }
 
 /* ===============================
 CARD
 =============================== */
-.card{
-  background:#fff;
-  padding:15px;
-  border-radius:14px;
-  box-shadow:0 4px 10px rgba(0,0,0,.08);
-  margin-bottom:15px;
+.card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 15px;
 }
 
 /* ===============================
@@ -175,39 +175,39 @@ FORM
 =============================== */
 .form-box input,
 .form-box select,
-.form-box button{
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-  border-radius:8px;
-  border:1px solid #ddd;
+.form-box button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 }
 
-.form-box button{
-  background:#7f5af0;
-  color:#fff;
-  border:none;
+.form-box button {
+  background: #7f5af0;
+  color: #fff;
+  border: none;
 }
 
 /* ===============================
 LIST
 =============================== */
-.list{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:12px;
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
 }
 
 /* ===============================
 RESPONSIVE
 =============================== */
-@media(max-width:900px){
-  .summary{
-    grid-template-columns:1fr;
+@media (max-width: 900px) {
+  .summary {
+    grid-template-columns: 1fr;
   }
 
-  .main{
-    padding:15px;
+  .main {
+    padding: 15px;
   }
 }
 
@@ -227,7 +227,7 @@ AUTH
   padding: 30px;
   border-radius: 14px;
   width: 320px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   text-align: center;
 }
 
@@ -257,7 +257,7 @@ AUTH
 }
 
 .active {
-  background: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.3);
   font-weight: bold;
 }
 
@@ -271,7 +271,7 @@ AUTH
   background: white; /* background putih biar kayak card */
   padding: 12px; /* jarak dalam */
   border-radius: 10px; /* sudut rounded */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* bayangan biar modern */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* bayangan biar modern */
   align-items: center; /* vertical align tengah */
 }
 
@@ -381,7 +381,7 @@ AUTH
   padding: 16px;
   border-radius: 12px;
   background: white;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* header (nama + status) */

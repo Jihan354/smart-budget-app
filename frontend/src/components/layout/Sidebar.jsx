@@ -47,14 +47,6 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
           {open && "Expenses"}
         </div>
 
-        {/* ANALYTICS */}
-        <div
-          className={page === "analytics" ? "active" : ""}
-          onClick={() => setPage("analytics")}
-        >
-          {open && "Analytics"}
-        </div>
-
       </div>
 
       {/* ================= LOGOUT ================= */}

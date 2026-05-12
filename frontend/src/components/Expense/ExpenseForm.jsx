@@ -2,22 +2,26 @@ import { useState } from "react";
 import { addExpense } from "../../services/api";
 
 export default function ExpenseForm({ refresh }) {
-
   // ================= STATE =================
   const [nama, setNama] = useState("");
-  const [jumlah, setJumlah] = useState("");
-  const [kategori, setKategori] = useState("Transport");
-  const [trip, setTrip] = useState("bali");
-  const [type, setType] = useState("expense");
 
-  //  TAMBAHAN TANGGAL
-  const [tanggal, setTanggal] = useState("");
+  const [jumlah, setJumlah] = useState("");
+
+  const [kategori, setKategori] = useState("Transport");
+
+  const [fromCity, setFromCity] = useState("Jakarta");
+
+  const [destination, setDestination] = useState("Bandung");
+
+  // ================= TRIP DATE =================
+  const [startDate, setStartDate] = useState("");
+
+  const [endDate, setEndDate] = useState("");
 
   // ================= HANDLE SUBMIT =================
   const handleSubmit = async () => {
-
     // ================= VALIDASI =================
-    if (!nama || !jumlah || !tanggal) {
+    if (!nama || !jumlah || !startDate || !endDate) {
       alert("Semua field wajib diisi!");
       return;
     }
@@ -27,76 +31,111 @@ export default function ExpenseForm({ refresh }) {
       return;
     }
 
+    if (fromCity === destination) {
+      alert("Kota asal dan destination tidak boleh sama!");
+
+      return;
+    }
+
     try {
       await addExpense({
         nama,
+
         kategori,
+
         jumlah: Number(jumlah),
-        tanggal: tanggal, // 🔥 pakai input user
-        trip,
-        type
+
+        start_date: startDate,
+
+        end_date: endDate,
+
+        from_city: fromCity,
+
+        destination,
+
+        type: "expense",
       });
 
       // ================= RESET =================
       setNama("");
+
       setJumlah("");
-      setTanggal("");
+
+      setStartDate("");
+
+      setEndDate("");
 
       refresh();
-
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
- return (
-  <div className="card form-card">
-    <h3>Tambah Data Travel</h3>
+  return (
+    <div className="card form-card">
+      <h3>Add Travel Expense</h3>
 
-    <div className="form-row">
+      <div className="form-row">
+        {/* NAMA */}
+        <input
+          placeholder="Contoh: Tiket Kereta / Hotel Malioboro"
+          value={nama}
+          onChange={(e) => setNama(e.target.value)}
+        />
 
-      <input
-        placeholder="Contoh: Tiket Pesawat / Hotel Bali"
-        value={nama}
-        onChange={(e) => setNama(e.target.value)}
-      />
+        {/* JUMLAH */}
+        <input
+          type="number"
+          placeholder="Jumlah Expense"
+          value={jumlah}
+          onChange={(e) => setJumlah(e.target.value)}
+        />
 
-      <input
-        type="number"
-        placeholder="Jumlah (contoh: 500000)"
-        value={jumlah}
-        onChange={(e) => setJumlah(e.target.value)}
-      />
+        {/* START DATE */}
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
 
-      <input
-        type="date"
-        value={tanggal}
-        onChange={(e) => setTanggal(e.target.value)}
-      />
+        {/* END DATE */}
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
 
-      <select value={kategori} onChange={(e) => setKategori(e.target.value)}>
-        <option>Transport</option>
-        <option>Hotel</option>
-        <option>Food</option>
-        <option>Ticket</option>
-      </select>
+        {/* KATEGORI */}
+        <select value={kategori} onChange={(e) => setKategori(e.target.value)}>
+          <option>Transport</option>
+          <option>Hotel</option>
+          <option>Food</option>
+          <option>Activity</option>
+        </select>
 
-      <select value={trip} onChange={(e) => setTrip(e.target.value)}>
-        <option value="bali">Bali</option>
-        <option value="jakarta">Jakarta</option>
-        <option value="luar_negeri">Luar Negeri</option>
-      </select>
+        {/* DESTINATION */}
+        <select value={fromCity} onChange={(e) => setFromCity(e.target.value)}>
+          <option>Jakarta</option>
+          <option>Bandung</option>
+          <option>Yogyakarta</option>
+          <option>Semarang</option>
+          <option>Surabaya</option>
+        </select>
 
-      <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="expense">Expense</option>
-        <option value="income">Income</option>
-      </select>
+        <select
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+        >
+          <option>Bandung</option>
+          <option>Yogyakarta</option>
+          <option>Semarang</option>
+          <option>Surabaya</option>
+          <option>Jakarta</option>
+        </select>
 
-      <button onClick={handleSubmit}>
-        Tambah
-      </button>
-
+        {/* BUTTON */}
+        <button onClick={handleSubmit}>Tambah</button>
+      </div>
     </div>
-  </div>
-);
+  );
 }
