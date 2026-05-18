@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { deleteExpense, updateExpense } from "../../services/api";
+import "../../styles/expenses.css";
 
 export default function ExpenseList({ data, refresh }) {
   // =========================================================
@@ -81,19 +82,19 @@ export default function ExpenseList({ data, refresh }) {
   const getCategoryIcon = (kategori) => {
     switch (kategori) {
       case "Transport":
-        return "🚆";
+        return "";
 
       case "Hotel":
-        return "🏨";
+        return "";
 
       case "Food":
-        return "🍜";
+        return "";
 
       case "Activity":
-        return "🎫";
+        return "";
 
       default:
-        return "📌";
+        return "";
     }
   };
 
@@ -125,7 +126,7 @@ export default function ExpenseList({ data, refresh }) {
               {/* HEADER */}
               {/* ============================================= */}
               <div className="expense-header">
-                <h3>📍 {tripName}</h3>
+                <h3> {tripName}</h3>
 
                 <span className="badge red">Travel Expense</span>
               </div>
@@ -136,12 +137,7 @@ export default function ExpenseList({ data, refresh }) {
               {/* LIST EXPENSE */}
               {/* ============================================= */}
               {tripItems.map((item) => (
-                <div
-                  key={item.id}
-                  style={{
-                    marginBottom: "15px",
-                  }}
-                >
+                <div key={item.id} className="expense-item">
                   {editId === item.id ? (
                     <>
                       {/* NAMA */}
@@ -238,7 +234,7 @@ export default function ExpenseList({ data, refresh }) {
                       </p>
 
                       <small>
-                        📅 {formatTanggal(item.start_date)}
+                        {formatTanggal(item.start_date)}
                         {" → "}
                         {formatTanggal(item.end_date)}
                       </small>
@@ -277,7 +273,9 @@ export default function ExpenseList({ data, refresh }) {
               {/* ============================================= */}
               {/* TOTAL */}
               {/* ============================================= */}
-              <h4>💰 Total Trip : Rp {formatRupiah(totalTrip)}</h4>
+              <h4 className="expense-total">
+                Total Trip : Rp {formatRupiah(totalTrip)}
+              </h4>
             </div>
           );
         })

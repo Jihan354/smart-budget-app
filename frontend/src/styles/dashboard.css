@@ -1,0 +1,45 @@
+/* ===================================================== */
+/* DASHBOARD HEADER */
+/* ===================================================== */
+
+.dashboard-header {
+  margin-bottom: 10px;
+}
+
+/* ===================================================== */
+/* SUMMARY GRID */
+/* ===================================================== */
+
+.summary {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 16px;
+}
+
+/* ===================================================== */
+/* SUMMARY CARD */
+/* ===================================================== */
+
+.card-summary {
+  background: white;
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card-summary h4 {
+  margin-bottom: 8px;
+
+  font-size: 15px;
+}
+
+.card-summary p {
+  font-size: 18px;
+
+  font-weight: bold;
+}

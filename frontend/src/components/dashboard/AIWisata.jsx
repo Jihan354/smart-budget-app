@@ -113,13 +113,13 @@ export default function AIWisata({ setSelectedWisata }) {
               <h4>{item.place_name}</h4>
 
               {/* CITY */}
-              <p>📍 {item.city}</p>
+              <p> {item.city}</p>
 
               {/* CATEGORY */}
-              <p>🏷️ {item.category}</p>
+              <p> {item.category}</p>
 
               {/* PRICE */}
-              <p>💰 Rp {item.price.toLocaleString("id-ID")}</p>
+              <p> Rp {item.price.toLocaleString("id-ID")}</p>
 
               {/* RATING */}
               <p>⭐ {item.rating}</p>

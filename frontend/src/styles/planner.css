@@ -1,0 +1,174 @@
+/* ===================================================== */
+/* AI WISATA */
+/* ===================================================== */
+
+.ai-card {
+  padding: 24px;
+}
+
+.ai-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  margin-top: 20px;
+}
+
+/* ===================================================== */
+/* INPUT */
+/* ===================================================== */
+
+.ai-form input,
+.ai-form select {
+  padding: 12px;
+
+  border-radius: 10px;
+
+  border: 1px solid #ddd;
+}
+
+/* ===================================================== */
+/* BUTTON */
+/* ===================================================== */
+
+.ai-btn {
+  background: #3b82f6;
+
+  color: white;
+
+  border: none;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+/* ===================================================== */
+/* RESULT */
+/* ===================================================== */
+
+.ai-result {
+  margin-top: 25px;
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  background: #f3f4f6;
+}
+
+/* ===================================================== */
+/* RECOMMEND CARD */
+/* ===================================================== */
+
+.recommend-card {
+  padding: 16px 0;
+
+  border-bottom: 1px solid #ddd;
+}
+
+/* ===================================================== */
+/* SELECT BUTTON */
+/* ===================================================== */
+
+.select-btn {
+  margin-top: 12px;
+
+  background: #7f5af0;
+
+  color: white;
+
+  border: none;
+
+  padding: 8px 14px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+/* ===================================================== */
+/* PREDICTION FORM */
+/* ===================================================== */
+
+.prediction-form {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  align-items: center;
+
+  margin-top: 20px;
+}
+
+/* ===================================================== */
+/* INPUT & SELECT */
+/* ===================================================== */
+
+.prediction-form input,
+.prediction-form select {
+  padding: 10px 14px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  min-width: 140px;
+
+  background: white;
+}
+
+/* ===================================================== */
+/* BUTTON */
+/* ===================================================== */
+
+.prediction-form button {
+  background: #3b82f6;
+
+  color: white;
+
+  border: none;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.prediction-form button:hover {
+  opacity: 0.9;
+}
+
+/* ===================================================== */
+/* RESULT */
+/* ===================================================== */
+
+.prediction-result {
+  background: #f9fafb;
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  line-height: 1.8;
+}
+
+/* ===================================================== */
+/* TOTAL */
+/* ===================================================== */
+
+.prediction-total {
+  font-size: 20px;
+
+  font-weight: bold;
+
+  color: #7f5af0;
+}

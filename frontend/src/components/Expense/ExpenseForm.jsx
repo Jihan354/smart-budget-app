@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { addExpense } from "../../services/api";
+import "../../styles/expenses.css";
 
 export default function ExpenseForm({ refresh }) {
   // ================= STATE =================

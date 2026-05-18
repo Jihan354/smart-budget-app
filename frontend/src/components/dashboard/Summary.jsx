@@ -1,3 +1,4 @@
+import "../../styles/summary.css";
 export default function Summary({ summary, data }) {
   // =========================================================
   // FORMAT RUPIAH

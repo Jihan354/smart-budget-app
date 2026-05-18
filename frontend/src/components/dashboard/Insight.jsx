@@ -104,27 +104,27 @@ export default function Insight({ data }) {
 
       {/* TOTAL */}
       <p>
-        💰 Total Travel Expense: <b>Rp {formatRupiah(total)}</b>
+        Total Travel Expense: <b>Rp {formatRupiah(total)}</b>
       </p>
 
       {/* TOTAL DESTINATION */}
       <p>
-        🧳 Total Trip: <b>{totalTrip} Destination</b>
+        Total Trip: <b>{totalTrip} Destination</b>
       </p>
 
       {/* MOST VISITED */}
       <p>
-        📍 Most Visited Destination: <b>{mostVisited}</b>
+        Most Visited Destination: <b>{mostVisited}</b>
       </p>
 
       {/* TOP CATEGORY */}
       <p>
-        🏆 Highest Expense Category: <b>{biggestCategory}</b>
+        Highest Expense Category: <b>{biggestCategory}</b>
       </p>
 
       {/* MOST EXPENSIVE */}
       <p>
-        🔥 Most Expensive Trip: <b>{expensiveTrip}</b>
+        Most Expensive Trip: <b>{expensiveTrip}</b>
       </p>
 
       <hr />
@@ -134,19 +134,19 @@ export default function Insight({ data }) {
       {/* ===================================================== */}
 
       {biggestCategory === "Transport" && (
-        <p>✈️ Transport menjadi pengeluaran terbesar selama perjalanan</p>
+        <p> Transport menjadi pengeluaran terbesar selama perjalanan</p>
       )}
 
       {biggestCategory === "Hotel" && (
-        <p>🏨 Budget hotel cukup tinggi dibanding kategori lain</p>
+        <p> Budget hotel cukup tinggi dibanding kategori lain</p>
       )}
 
       {biggestCategory === "Food" && (
-        <p>🍜 Pengeluaran makanan cukup besar selama trip</p>
+        <p> Pengeluaran makanan cukup besar selama trip</p>
       )}
 
       {biggestCategory === "Activity" && (
-        <p>🎫 Aktivitas wisata mendominasi pengeluaran perjalanan</p>
+        <p> Aktivitas wisata mendominasi pengeluaran perjalanan</p>
       )}
 
       {/* WARNING */}

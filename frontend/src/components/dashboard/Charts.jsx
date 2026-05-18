@@ -1,3 +1,5 @@
+import "../../styles/charts.css";
+
 import {
   PieChart,
   Pie,

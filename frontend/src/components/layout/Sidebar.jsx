@@ -1,5 +1,4 @@
 export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
-
   // ================= LOGOUT =================
   const handleLogout = () => {
     setIsLogin(false);
@@ -7,7 +6,6 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
 
   return (
     <div className={open ? "sidebar open" : "sidebar closed"}>
-
       {/* ================= TOGGLE ================= */}
       <button className="toggle-btn" onClick={() => setOpen(!open)}>
         ☰
@@ -22,7 +20,6 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
 
       {/* ================= MENU ================= */}
       <div className="menu">
-
         {/* DASHBOARD */}
         <div
           className={page === "dashboard" ? "active" : ""}
@@ -46,16 +43,12 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
         >
           {open && "Expenses"}
         </div>
-
       </div>
 
       {/* ================= LOGOUT ================= */}
       <div className="logout">
-        <button onClick={handleLogout}>
-          🚪 {open && "Logout"}
-        </button>
+        <button onClick={handleLogout}> {open && "Logout"} ➜]</button>
       </div>
-
     </div>
   );
 }

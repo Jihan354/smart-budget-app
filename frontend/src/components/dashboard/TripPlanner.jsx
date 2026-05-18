@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import Prediction from "./Prediction";
 import AIWisata from "./AIWisata";
+import "../../styles/planner.css";
 
 export default function TripPlanner({ refresh }) {
   // =========================================================
@@ -42,12 +43,12 @@ export default function TripPlanner({ refresh }) {
         <div className="card">
           <h3>Selected Destination</h3>
 
-          <p>📍 {selectedWisata.destination}</p>
+          <p> {selectedWisata.destination}</p>
 
-          <p>🎫 {selectedWisata.activity_name}</p>
+          <p> {selectedWisata.activity_name}</p>
 
           <p>
-            💰 Activity Ticket : Rp{" "}
+            Activity Ticket : Rp{" "}
             {selectedWisata.activity_price.toLocaleString("id-ID")}
           </p>
 

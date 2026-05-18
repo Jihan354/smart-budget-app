@@ -77,12 +77,12 @@ export default function Prediction({ refresh, selectedWisata }) {
         <div className="card">
           <h4>Selected AI Destination</h4>
 
-          <p>📍 {selectedWisata.destination}</p>
+          <p> {selectedWisata.destination}</p>
 
-          <p>🎫 {selectedWisata.activity_name}</p>
+          <p> {selectedWisata.activity_name}</p>
 
           <p>
-            💰 Ticket Price : Rp{" "}
+            Ticket Price : Rp{" "}
             {selectedWisata.activity_price.toLocaleString("id-ID")}
           </p>
 
@@ -163,27 +163,27 @@ export default function Prediction({ refresh, selectedWisata }) {
             {result.destination}
           </p>
 
-          <p>📅 Trip Days: {result.days}</p>
+          <p> Trip Days: {result.days}</p>
 
-          <p>👥 Number of Travelers: {result.travelers}</p>
+          <p> Number of Travelers: {result.travelers}</p>
 
-          <p>💼 Budget Type: {result.budget_type}</p>
+          <p> Budget Type: {result.budget_type}</p>
 
           <hr />
 
           <h4>Estimated Budget Breakdown</h4>
 
           {/* TRANSPORT */}
-          <p>🚆 Transport: Rp {formatRupiah(result.predicted_budget * 0.35)}</p>
+          <p> Transport: Rp {formatRupiah(result.predicted_budget * 0.35)}</p>
 
           {/* HOTEL */}
-          <p>🏨 Hotel: Rp {formatRupiah(result.predicted_budget * 0.4)}</p>
+          <p> Hotel: Rp {formatRupiah(result.predicted_budget * 0.4)}</p>
 
           {/* FOOD */}
-          <p>🍜 Food: Rp {formatRupiah(result.predicted_budget * 0.15)}</p>
+          <p> Food: Rp {formatRupiah(result.predicted_budget * 0.15)}</p>
 
           {/* ACTIVITY */}
-          <p>🎫 Activity: Rp {formatRupiah(result.predicted_budget * 0.1)}</p>
+          <p> Activity: Rp {formatRupiah(result.predicted_budget * 0.1)}</p>
 
           {/* AI ACTIVITY */}
           {selectedWisata && (
@@ -192,10 +192,10 @@ export default function Prediction({ refresh, selectedWisata }) {
 
               <h4>AI Selected Activity</h4>
 
-              <p>🎫 {selectedWisata.activity_name}</p>
+              <p> {selectedWisata.activity_name}</p>
 
               <p>
-                💰 Ticket: Rp{" "}
+                Ticket: Rp{" "}
                 {selectedWisata.activity_price.toLocaleString("id-ID")}
               </p>
             </>

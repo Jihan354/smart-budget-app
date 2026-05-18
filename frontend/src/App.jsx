@@ -28,7 +28,9 @@ import Register from "./components/auth/Register";
 // =========================================================
 // STYLE
 // =========================================================
-import "./App.css";
+import "./styles/global.css";
+import "./styles/sidebar.css";
+import "./styles/responsive.css";
 
 function App() {
   // =========================================================
@@ -86,15 +88,27 @@ function App() {
   // =========================================================
   const filteredData = data
 
+    // =====================================================
     // FILTER TRIP
-    .filter((item) => (filterTrip ? item.trip === filterTrip : true))
+    // =====================================================
+    .filter((item) => (filterTrip ? item.destination === filterTrip : true))
 
-    // SEARCH NAMA
-    .filter((item) =>
-      item.nama.toLowerCase().includes(searchNama.toLowerCase()),
-    )
+    // =====================================================
+    // SEARCH
+    // =====================================================
+    .filter((item) => {
+      const keyword = searchNama.toLowerCase();
 
+      return (
+        item.nama.toLowerCase().includes(keyword) ||
+        item.destination.toLowerCase().includes(keyword) ||
+        item.from_city.toLowerCase().includes(keyword)
+      );
+    })
+
+    // =====================================================
     // FILTER BULAN
+    // =====================================================
     .filter((item) => {
       if (!filterBulan) return true;
 
@@ -103,7 +117,9 @@ function App() {
       return bulan === Number(filterBulan);
     })
 
+    // =====================================================
     // FILTER TAHUN
+    // =====================================================
     .filter((item) => {
       if (!filterTahun) return true;
 
@@ -115,7 +131,7 @@ function App() {
   // =========================================================
   // TRIP OPTIONS
   // =========================================================
-  const tripOptions = [...new Set(data.map((item) => item.trip))];
+  const tripOptions = [...new Set(data.map((item) => item.destination))];
 
   // =========================================================
   // INITIAL LOAD
