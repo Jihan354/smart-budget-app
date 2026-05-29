@@ -1,29 +1,95 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import { predictWisata } from "../../services/api";
 
 export default function AIWisata({ setSelectedWisata }) {
   // =========================================================
   // STATE
   // =========================================================
-  const [city, setCity] = useState("Jakarta");
+  const [city, setCity] = useState("");
 
-  const [category, setCategory] = useState("Budaya");
+  const [category, setCategory] = useState("");
 
   const [price, setPrice] = useState("");
 
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState([]);
+
+  const [wisataImages, setWisataImages] = useState({});
+
+  // =========================================================
+  // FETCH IMAGE
+  // =========================================================
+  const fetchWisataImage = async (placeName) => {
+    try {
+      const response = await fetch(
+        `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(
+          placeName,
+        )}`,
+      );
+
+      const data = await response.json();
+
+      // =====================================================
+      // WIKIPEDIA IMAGE
+      // =====================================================
+      if (data.thumbnail?.source) {
+        return data.thumbnail.source;
+      }
+
+      // =====================================================
+      // FALLBACK IMAGE
+      // =====================================================
+      return `https://source.unsplash.com/600x400/?${encodeURIComponent(
+        placeName + " tourism indonesia",
+      )}`;
+    } catch (error) {
+      // =====================================================
+      // FINAL FALLBACK
+      // =====================================================
+      return `https://source.unsplash.com/600x400/?${encodeURIComponent(
+        placeName + " tourism indonesia",
+      )}`;
+    }
+  };
+
+  // =========================================================
+  // LOAD IMAGE
+  // =========================================================
+  useEffect(() => {
+    const loadImages = async () => {
+      const imageMap = {};
+
+      for (const item of result) {
+        const image = await fetchWisataImage(item.place_name);
+
+        imageMap[item.place_name] = image;
+      }
+
+      setWisataImages(imageMap);
+    };
+
+    if (result.length > 0) {
+      loadImages();
+    }
+  }, [result]);
 
   // =========================================================
   // PREDICT AI
   // =========================================================
   const handlePredict = async () => {
+    if (!city || !category || !price) {
+      alert("Lengkapi pencarian wisata terlebih dahulu!");
+
+      return;
+    }
+
     try {
       const res = await predictWisata({
         city,
 
         category,
 
-        price: Number(price),
+        price: Number(price.replace(/\./g, "")),
       });
 
       setResult(res);
@@ -47,6 +113,14 @@ export default function AIWisata({ setSelectedWisata }) {
 
       rating: item.rating,
     });
+
+    setTimeout(() => {
+      const target = document.querySelector(".prediction-card");
+
+      target?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }, 200);
   };
 
   return (
@@ -69,27 +143,52 @@ export default function AIWisata({ setSelectedWisata }) {
       <div className="ai-form">
         {/* CITY */}
         <select value={city} onChange={(e) => setCity(e.target.value)}>
+          <option value="" disabled hidden>
+            Pilih Kota Wisata
+          </option>
+
           <option>Jakarta</option>
+
           <option>Bandung</option>
+
           <option>Yogyakarta</option>
+
           <option>Semarang</option>
+
           <option>Surabaya</option>
         </select>
 
         {/* CATEGORY */}
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="" disabled hidden>
+            Jenis Wisata
+          </option>
+
           <option>Budaya</option>
+
           <option>Bahari</option>
+
           <option>Taman Hiburan</option>
+
           <option>Cagar Alam</option>
+
+          <option>Tempat Ibadah</option>
+
+          <option>Pusat Perbelanjaan</option>
         </select>
 
         {/* PRICE */}
         <input
-          type="number"
+          type="text"
           placeholder="Budget Tiket Wisata"
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={(e) => {
+            const raw = e.target.value.replace(/\D/g, "");
+
+            const formatted = Number(raw).toLocaleString("id-ID");
+
+            setPrice(formatted);
+          }}
         />
 
         {/* BUTTON */}
@@ -101,42 +200,44 @@ export default function AIWisata({ setSelectedWisata }) {
       {/* ===================================================== */}
       {/* RESULT */}
       {/* ===================================================== */}
-      {result && result.length > 0 && (
-        <div className="ai-result">
-          <h3>Menampilkan wisata sesuai budget tiket.</h3>
-
+      {result.length > 0 && (
+        <div className="recommend-grid">
           {result.map((item, index) => (
             <div key={index} className="recommend-card">
-              {/* ============================================= */}
-              {/* PLACE */}
-              {/* ============================================= */}
-              <h4>{item.place_name}</h4>
+              {/* IMAGE */}
+              <img
+                src={wisataImages[item.place_name]}
+                alt={item.place_name}
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src = "https://picsum.photos/400/300";
+                }}
+              />
 
-              {/* CITY */}
-              <p> {item.city}</p>
+              {/* CONTENT */}
+              <div className="recommend-content">
+                {/* PLACE */}
+                <h3>{item.place_name}</h3>
 
-              {/* CATEGORY */}
-              <p> {item.category}</p>
+                {/* CITY */}
+                <p>{item.city}</p>
 
-              {/* PRICE */}
-              <p> Rp {item.price.toLocaleString("id-ID")}</p>
+                {/* RATING */}
+                <div className="recommend-rating">⭐ {item.rating}</div>
 
-              {/* RATING */}
-              <p>⭐ {item.rating}</p>
+                {/* PRICE */}
+                <div className="recommend-price">
+                  Rp {item.price.toLocaleString("id-ID")}
+                </div>
 
-              <br />
-
-              {/* ============================================= */}
-              {/* BUTTON SELECT */}
-              {/* ============================================= */}
-              <button
-                className="select-btn"
-                onClick={() => handleSelectWisata(item)}
-              >
-                Select Destination
-              </button>
-
-              <hr />
+                {/* BUTTON */}
+                <button
+                  className="select-btn"
+                  onClick={() => handleSelectWisata(item)}
+                >
+                  Plan AI ✈
+                </button>
+              </div>
             </div>
           ))}
         </div>

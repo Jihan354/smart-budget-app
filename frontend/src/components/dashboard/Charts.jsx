@@ -1,24 +1,61 @@
 import "../../styles/charts.css";
 
 import {
-  PieChart,
-  Pie,
-  Cell,
   Tooltip,
   ResponsiveContainer,
   BarChart,
   XAxis,
   YAxis,
   CartesianGrid,
-  Legend,
   Bar,
 } from "recharts";
 
-export default function Charts({ data }) {
-  // =========================================================
+export default function Charts() {
+  // =====================================================
+  // GET MY TRIPS
+  // =====================================================
+  const myTrips = JSON.parse(localStorage.getItem("myTrips")) || [];
+
+  // =====================================================
+  // DESTINATION DATA
+  // =====================================================
+  // =====================================================
+  // GROUP DESTINATION
+  // =====================================================
+  const groupedDestination = {};
+
+  myTrips.forEach((trip) => {
+    const destination = trip.prediction?.destination;
+
+    const total = trip.prediction?.predicted_budget || 0;
+
+    if (!groupedDestination[destination]) {
+      groupedDestination[destination] = 0;
+    }
+
+    groupedDestination[destination] += total;
+  });
+
+  // =====================================================
+  // FINAL DATA
+  // =====================================================
+  const destinationData = Object.keys(groupedDestination).map((key) => ({
+    destination: key,
+
+    total: groupedDestination[key],
+  }));
+
+  // =====================================================
+  // FORMAT RUPIAH
+  // =====================================================
+  const formatRupiah = (value) => {
+    return new Intl.NumberFormat("id-ID").format(value);
+  };
+
+  // =====================================================
   // SAFETY
-  // =========================================================
-  if (!data || data.length === 0) {
+  // =====================================================
+  if (destinationData.length === 0) {
     return (
       <div className="card">
         <h3>Travel Analytics Chart</h3>
@@ -28,121 +65,35 @@ export default function Charts({ data }) {
     );
   }
 
-  // =========================================================
-  // CATEGORY ANALYTICS
-  // =========================================================
-  const groupedCategory = {};
-
-  data.forEach((item) => {
-    if (item.type === "expense") {
-      if (!groupedCategory[item.kategori]) {
-        groupedCategory[item.kategori] = 0;
-      }
-
-      groupedCategory[item.kategori] += Number(item.jumlah);
-    }
-  });
-
-  const categoryData = Object.keys(groupedCategory).map((key) => ({
-    name: key,
-
-    value: groupedCategory[key],
-  }));
-
-  // =========================================================
-  // DESTINATION ANALYTICS
-  // =========================================================
-  const groupedDestination = {};
-
-  data.forEach((item) => {
-    if (item.type === "expense") {
-      const destination = item.destination || "Unknown";
-
-      if (!groupedDestination[destination]) {
-        groupedDestination[destination] = 0;
-      }
-
-      groupedDestination[destination] += Number(item.jumlah);
-    }
-  });
-
-  const destinationData = Object.keys(groupedDestination).map((key) => ({
-    destination: key,
-
-    total: groupedDestination[key],
-  }));
-
-  // =========================================================
-  // COLORS
-  // =========================================================
-  const COLORS = ["#7f5af0", "#ff8906", "#2cb67d", "#e53170"];
-
-  // =========================================================
-  // FORMAT RUPIAH
-  // =========================================================
-  const formatRupiah = (value) => {
-    return new Intl.NumberFormat("id-ID").format(value);
-  };
-
   return (
-    <div>
-      {/* ===================================================== */}
-      {/* PIE CHART */}
-      {/* ===================================================== */}
-      <div className="card">
-        <h3>Travel Expense by Category</h3>
+    <div className="card bar-card">
+      <div className="chart-header">
+        <h3>Destination Spending Comparison</h3>
 
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={categoryData}
-              dataKey="value"
-              nameKey="name"
-              outerRadius={110}
-              label={({ name, percent }) =>
-                `${name} ${(percent * 100).toFixed(0)}%`
-              }
-            >
-              {categoryData.map((entry, index) => (
-                <Cell key={index} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-
-            <Tooltip formatter={(value) => `Rp ${formatRupiah(value)}`} />
-          </PieChart>
-        </ResponsiveContainer>
+        <p>Compare total travel expenses between destinations</p>
       </div>
 
-      {/* ===================================================== */}
-      {/* BAR CHART */}
-      {/* ===================================================== */}
-      <div className="card">
-        <h3>Destination Travel Spending</h3>
+      <ResponsiveContainer width="100%" height={340}>
+        <BarChart
+          data={destinationData}
+          margin={{
+            top: 20,
+            right: 20,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
 
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart
-            data={destinationData}
-            margin={{
-              top: 20,
-              right: 20,
-              left: 40,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="destination" />
 
-            <XAxis dataKey="destination" />
+          <YAxis />
 
-            <YAxis />
+          <Tooltip formatter={(value) => `Rp ${formatRupiah(value)}`} />
 
-            <Tooltip formatter={(value) => `Rp ${formatRupiah(value)}`} />
-
-            <Legend />
-
-            <Bar dataKey="total" fill="#7f5af0" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+          <Bar dataKey="total" fill="#7c3aed" radius={[10, 10, 0, 0]} />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }
