@@ -1,4 +1,38 @@
 /* ===================================================== */
+/* ROOT VARIABLES */
+/* ===================================================== */
+
+:root {
+  --primary: #7c3aed;
+  --primary-light: #a855f7;
+
+  --background: #f5f7fb;
+  --card-bg: #ffffff;
+
+  --text-dark: #1e293b;
+  --text-soft: #64748b;
+
+  --success: #22c55e;
+  --danger: #ef4444;
+
+  --radius: 18px;
+
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+  --font-main: "Poppins", sans-serif;
+}
+
+/* ===================================================== */
+/* RESET */
+/* ===================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===================================================== */
 /* RESET */
 /* ===================================================== */
 
@@ -15,9 +49,11 @@
 
 /* Styling dasar body website */
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f6fb;
-  color: #333;
+  font-family: var(--font-main);
+
+  background: var(--background);
+
+  color: var(--text-dark);
 }
 
 /* ===================================================== */
@@ -38,12 +74,16 @@ body {
 .main {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+
+  gap: 18px;
 
   width: 100%;
+
   min-height: 100vh;
 
-  padding: 20px;
+  padding: 20px 24px;
+
+  margin-left: 200px;
 }
 
 /* ===================================================== */
@@ -52,13 +92,44 @@ body {
 
 /* Styling card global */
 .card {
-  background: white;
+  background: var(--card-bg);
 
   padding: 20px;
 
-  border-radius: 16px;
+  border-radius: var(--radius);
 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow);
+}
+
+/* ===================================================== */
+/* GLOBAL FORM */
+/* ===================================================== */
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-main);
+}
+
+button {
+  border: none;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+input,
+select,
+textarea {
+  border: 1px solid #dbe1ea;
+
+  border-radius: 12px;
+
+  padding: 12px 14px;
+
+  outline: none;
 }
 
 /* ===================================================== */

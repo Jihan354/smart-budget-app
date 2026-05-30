@@ -1,106 +1,127 @@
 import "../../styles/summary.css";
-export default function Summary({ summary, data }) {
-  // =========================================================
+
+export default function Summary() {
+  // =====================================================
+  // GET MY TRIPS
+  // =====================================================
+  const myTrips = JSON.parse(localStorage.getItem("myTrips")) || [];
+
+  // =====================================================
   // FORMAT RUPIAH
-  // =========================================================
+  // =====================================================
   const formatRupiah = (angka) => {
     return new Intl.NumberFormat("id-ID").format(angka);
   };
 
-  // =========================================================
-  // SAFETY
-  // =========================================================
-  if (!data) {
-    return null;
-  }
+  // =====================================================
+  // TOTAL EXPENSE
+  // =====================================================
+  const totalExpense = myTrips.reduce(
+    (total, trip) => total + (trip.prediction?.predicted_budget || 0),
 
-  // =========================================================
-  // CATEGORY MAP
-  // =========================================================
-  const kategoriMap = {};
+    0,
+  );
 
-  data.forEach((item) => {
-    if (item.type === "expense") {
-      if (!kategoriMap[item.kategori]) {
-        kategoriMap[item.kategori] = 0;
-      }
-
-      kategoriMap[item.kategori] += Number(item.jumlah);
-    }
-  });
-
-  // =========================================================
-  // DESTINATION MAP
-  // =========================================================
-  const tripMap = {};
-
-  data.forEach((item) => {
-    const destination = item.destination || "Unknown";
-
-    if (!tripMap[destination]) {
-      tripMap[destination] = 0;
-    }
-
-    tripMap[destination]++;
-  });
-
-  // =========================================================
+  // =====================================================
   // FAVORITE DESTINATION
-  // =========================================================
-  const favoriteTrip =
-    Object.keys(tripMap).length > 0
-      ? Object.entries(tripMap).sort((a, b) => b[1] - a[1])[0][0]
+  // =====================================================
+  const destinationMap = {};
+
+  myTrips.forEach((trip) => {
+    const destination = trip.prediction?.destination;
+
+    if (!destinationMap[destination]) {
+      destinationMap[destination] = 0;
+    }
+
+    destinationMap[destination]++;
+  });
+
+  const favoriteDestination =
+    Object.keys(destinationMap).length > 0
+      ? Object.entries(destinationMap).sort((a, b) => b[1] - a[1])[0][0]
       : "No Destination";
 
-  // =========================================================
+  // =====================================================
   // TOTAL DESTINATION
-  // =========================================================
-  const totalDestination = new Set(data.map((item) => item.destination)).size;
+  // =====================================================
+  const totalDestination = new Set(
+    myTrips.map((trip) => trip.prediction?.destination),
+  ).size;
 
-  // =========================================================
-  // TOP CATEGORY
-  // =========================================================
-  const topCategory =
-    Object.keys(kategoriMap).length > 0
-      ? Object.entries(kategoriMap).sort((a, b) => b[1] - a[1])[0][0]
-      : "No Category";
-
-  // =========================================================
+  // =====================================================
   // TOTAL ACTIVITY
-  // =========================================================
-  const totalActivity = data.filter(
-    (item) => item.kategori === "Activity",
-  ).length;
+  // =====================================================
+  const totalActivity = myTrips.length;
 
-  // =========================================================
+  // =====================================================
+  // TOP CATEGORY
+  // =====================================================
+  const topCategory = "Activity";
+
+  // =====================================================
+  // CURRENT YEAR
+  // =====================================================
+  const currentYear = new Date().getFullYear();
+
+  // =====================================================
+  // YEARLY TRIPS
+  // =====================================================
+  const yearlyTrips = myTrips.filter((trip) => {
+    if (!trip.createdAt) return false;
+
+    const tripYear = new Date(trip.createdAt).getFullYear();
+
+    return tripYear === currentYear;
+  });
+
+  // =====================================================
+  // YEARLY TOTAL
+  // =====================================================
+  const yearlyExpense = yearlyTrips.reduce(
+    (total, trip) => total + (trip.prediction?.predicted_budget || 0),
+
+    0,
+  );
+
+  // =====================================================
+  // YEARLY TRIP COUNT
+  // =====================================================
+  const yearlyTripCount = yearlyTrips.length;
+
+  // =====================================================
   // BUDGET STATUS
-  // =========================================================
+  // =====================================================
   let budgetStatus = "Safe";
 
-  if ((summary.total_expense || 0) > 10000000) {
+  // OVER
+  if (yearlyTripCount > 6 || yearlyExpense > 60000000) {
     budgetStatus = "Over Budget";
-  } else if ((summary.total_expense || 0) > 5000000) {
+  }
+
+  // WARNING
+  else if (yearlyTripCount >= 4 || yearlyExpense > 30000000) {
     budgetStatus = "Warning";
   }
 
   return (
     <div>
-      {/* ===================================================== */}
-      {/* TRAVEL SUMMARY */}
-      {/* ===================================================== */}
+      {/* ======================================= */}
+      {/* SUMMARY */}
+      {/* ======================================= */}
       <div className="summary">
         {/* TOTAL EXPENSE */}
         <div className="card">
           <h4>Total Travel Expense</h4>
 
-          <p>Rp {formatRupiah(summary.total_expense || 0)}</p>
+          <p>Rp {formatRupiah(totalExpense)}</p>
         </div>
 
         {/* FAVORITE DESTINATION */}
         <div className="card">
           <h4>Favorite Destination</h4>
 
-          <p>{favoriteTrip}</p>
+          <p>{favoriteDestination}</p>
         </div>
 
         {/* TOTAL DESTINATION */}
@@ -132,38 +153,15 @@ export default function Summary({ summary, data }) {
         </div>
       </div>
 
-      {/* ===================================================== */}
+      <br />
+
+      {/* ======================================= */}
       {/* CATEGORY SUMMARY */}
-      {/* ===================================================== */}
+      {/* ======================================= */}
       <div className="card">
         <h4>Travel Expenses by Category</h4>
 
-        {Object.keys(kategoriMap).length === 0 ? (
-          <p>No Travel Expense Data</p>
-        ) : (
-          Object.entries(kategoriMap).map(([kategori, total]) => {
-            // =================================================
-            // ICON
-            // =================================================
-            let icon = "📌";
-
-            if (kategori === "Transport") icon = "🚆";
-
-            if (kategori === "Hotel") icon = "🏨";
-
-            if (kategori === "Food") icon = "🍜";
-
-            if (kategori === "Activity") icon = "🎫";
-
-            return (
-              <p key={kategori}>
-                {icon} {kategori}
-                {" : "}
-                Rp {formatRupiah(total)}
-              </p>
-            );
-          })
-        )}
+        <p>🎫 Activity : Rp {formatRupiah(totalExpense)}</p>
       </div>
     </div>
   );

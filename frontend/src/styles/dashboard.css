@@ -3,7 +3,29 @@
 /* ===================================================== */
 
 .dashboard-header {
+  margin-bottom: 18px;
+}
+
+/* ===================================================== */
+/* WELCOME CARD */
+/* ===================================================== */
+
+.dashboard-welcome {
+  padding: 26px;
+}
+
+.dashboard-welcome h2 {
+  font-size: 34px;
+
   margin-bottom: 10px;
+}
+
+.dashboard-welcome p {
+  color: #64748b;
+
+  font-size: 15px;
+
+  line-height: 1.7;
 }
 
 /* ===================================================== */
@@ -13,9 +35,9 @@
 .summary {
   display: grid;
 
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 
-  gap: 16px;
+  gap: 18px;
 }
 
 /* ===================================================== */
@@ -25,21 +47,57 @@
 .card-summary {
   background: white;
 
-  padding: 20px;
+  padding: 22px;
 
-  border-radius: 14px;
+  border-radius: 20px;
 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+  transition: 0.25s ease;
 }
+
+.card-summary:hover {
+  transform: translateY(-4px);
+}
+
+/* ===================================================== */
+/* SUMMARY LABEL */
+/* ===================================================== */
 
 .card-summary h4 {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 
   font-size: 15px;
+
+  color: #64748b;
+
+  font-weight: 500;
 }
 
-.card-summary p {
-  font-size: 18px;
+/* ===================================================== */
+/* SUMMARY VALUE */
+/* ===================================================== */
 
-  font-weight: bold;
+.card-summary p {
+  font-size: 28px;
+
+  font-weight: 700;
+
+  color: #1e293b;
+}
+
+/* ===================================================== */
+/* CHART SECTION */
+/* ===================================================== */
+
+.chart-section {
+  margin-top: 10px;
+}
+
+/* ===================================================== */
+/* INSIGHT SECTION */
+/* ===================================================== */
+
+.insight-section {
+  margin-top: 10px;
 }

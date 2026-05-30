@@ -36,12 +36,12 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
           {open && "Plan Trip"}
         </div>
 
-        {/* EXPENSES */}
+        {/* MyTrip */}
         <div
           className={page === "expenses" ? "active" : ""}
           onClick={() => setPage("expenses")}
         >
-          {open && "Expenses"}
+          {open && "MyTrip"}
         </div>
       </div>
 

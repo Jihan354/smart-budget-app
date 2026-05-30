@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { getExpenses, getSummary } from "./services/api";
 
 // =========================================================
@@ -14,10 +15,9 @@ import TripPlanner from "./components/dashboard/TripPlanner";
 import Prediction from "./components/dashboard/Prediction";
 
 // =========================================================
-// EXPENSE
+// MY TRIP
 // =========================================================
-import ExpenseForm from "./components/Expense/ExpenseForm";
-import ExpenseList from "./components/Expense/ExpenseList";
+import Expenses from "./components/Expense/Expenses";
 
 // =========================================================
 // AUTH
@@ -60,17 +60,6 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // =========================================================
-  // FILTER STATE
-  // =========================================================
-  const [filterTrip, setFilterTrip] = useState("");
-
-  const [searchNama, setSearchNama] = useState("");
-
-  const [filterBulan, setFilterBulan] = useState("");
-
-  const [filterTahun, setFilterTahun] = useState("");
-
-  // =========================================================
   // LOAD DATA
   // =========================================================
   const loadData = async () => {
@@ -82,56 +71,6 @@ function App() {
 
     setSummary(sum);
   };
-
-  // =========================================================
-  // FILTER DATA
-  // =========================================================
-  const filteredData = data
-
-    // =====================================================
-    // FILTER TRIP
-    // =====================================================
-    .filter((item) => (filterTrip ? item.destination === filterTrip : true))
-
-    // =====================================================
-    // SEARCH
-    // =====================================================
-    .filter((item) => {
-      const keyword = searchNama.toLowerCase();
-
-      return (
-        item.nama.toLowerCase().includes(keyword) ||
-        item.destination.toLowerCase().includes(keyword) ||
-        item.from_city.toLowerCase().includes(keyword)
-      );
-    })
-
-    // =====================================================
-    // FILTER BULAN
-    // =====================================================
-    .filter((item) => {
-      if (!filterBulan) return true;
-
-      const bulan = new Date(item.start_date).getMonth() + 1;
-
-      return bulan === Number(filterBulan);
-    })
-
-    // =====================================================
-    // FILTER TAHUN
-    // =====================================================
-    .filter((item) => {
-      if (!filterTahun) return true;
-
-      const tahun = new Date(item.start_date).getFullYear();
-
-      return tahun === Number(filterTahun);
-    });
-
-  // =========================================================
-  // TRIP OPTIONS
-  // =========================================================
-  const tripOptions = [...new Set(data.map((item) => item.destination))];
 
   // =========================================================
   // INITIAL LOAD
@@ -188,6 +127,7 @@ function App() {
         className="main"
         style={{
           marginLeft: sidebarOpen ? "220px" : "65px",
+
           transition: "0.3s",
         }}
       >
@@ -202,7 +142,7 @@ function App() {
         {page === "planTrip" && <TripPlanner refresh={loadData} />}
 
         {/* ================================================= */}
-        {/* EXPENSES */}
+        {/* MY TRIP */}
         {/* ================================================= */}
         {page === "expenses" && (
           <>
@@ -210,72 +150,17 @@ function App() {
             {/* HEADER */}
             {/* ============================================= */}
             <div className="card">
-              <h3>Travel Expense Manager</h3>
+              <h2>My Trip</h2>
 
-              <p>
-                Track and manage your travel expenses based on trip destination
-                and category.
-              </p>
+              <p>Your AI travel plan and estimated trip budget.</p>
             </div>
 
-            {/* ============================================= */}
-            {/* FILTER BAR */}
-            {/* ============================================= */}
-            <div className="filter-bar">
-              {/* SEARCH */}
-              <input
-                type="text"
-                placeholder="Cari nama..."
-                value={searchNama}
-                onChange={(e) => setSearchNama(e.target.value)}
-              />
-
-              {/* FILTER TRIP */}
-              <select onChange={(e) => setFilterTrip(e.target.value)}>
-                <option value="">Semua Trip</option>
-
-                {tripOptions.map((trip, index) => (
-                  <option key={index} value={trip}>
-                    {trip}
-                  </option>
-                ))}
-              </select>
-
-              {/* FILTER BULAN */}
-              <select onChange={(e) => setFilterBulan(e.target.value)}>
-                <option value="">Semua Bulan</option>
-
-                <option value="1">Januari</option>
-                <option value="2">Februari</option>
-                <option value="3">Maret</option>
-                <option value="4">April</option>
-                <option value="5">Mei</option>
-                <option value="6">Juni</option>
-                <option value="7">Juli</option>
-                <option value="8">Agustus</option>
-                <option value="9">September</option>
-                <option value="10">Oktober</option>
-                <option value="11">November</option>
-                <option value="12">Desember</option>
-              </select>
-
-              {/* FILTER TAHUN */}
-              <input
-                type="number"
-                value={filterTahun}
-                onChange={(e) => setFilterTahun(e.target.value)}
-              />
-            </div>
+            <br />
 
             {/* ============================================= */}
-            {/* EXPENSE FORM */}
+            {/* MY TRIP CONTENT */}
             {/* ============================================= */}
-            <ExpenseForm refresh={loadData} />
-
-            {/* ============================================= */}
-            {/* EXPENSE LIST */}
-            {/* ============================================= */}
-            <ExpenseList data={filteredData} refresh={loadData} />
+            <Expenses />
           </>
         )}
 

@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { predictBudget } from "../../services/api";
 
+import "../../styles/prediction.css";
+
 export default function Prediction({ refresh, selectedWisata }) {
   // =========================================================
   // STATE
   // =========================================================
-  const [fromCity, setFromCity] = useState("Jakarta");
+  const [fromCity, setFromCity] = useState("");
 
-  const [destination, setDestination] = useState("Yogyakarta");
+  const [destination, setDestination] = useState("");
 
-  const [days, setDays] = useState(1);
+  const [days, setDays] = useState("");
 
-  const [travelers, setTravelers] = useState(1);
+  const [travelers, setTravelers] = useState("");
 
-  const [budgetType, setBudgetType] = useState("medium");
+  const [budgetType, setBudgetType] = useState("");
 
   const [result, setResult] = useState(null);
 
@@ -36,7 +38,71 @@ export default function Prediction({ refresh, selectedWisata }) {
   // =========================================================
   // PREDICT
   // =========================================================
+  const handleCreateTrip = () => {
+    // =========================================
+    // AMBIL TRIP LAMA
+    // =========================================
+    const existingTrips = JSON.parse(localStorage.getItem("myTrips")) || [];
+
+    // =========================================
+    // TOTAL BUDGET
+    // =========================================
+    const totalBudget =
+      result.predicted_budget * 0.45 +
+      result.predicted_budget * 0.25 +
+      result.predicted_budget * 0.2 +
+      (result.predicted_budget * 0.1 + (selectedWisata?.activity_price || 0));
+
+    // =========================================
+    // DATA TRIP BARU
+    // =========================================
+    const newTrip = {
+      prediction: result,
+
+      selectedWisata,
+
+      totalBudget,
+
+      tripDate: new Date().toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+      createdAt: new Date(),
+    };
+
+    // =========================================
+    // TAMBAH KE ARRAY
+    // =========================================
+    existingTrips.push(newTrip);
+
+    // =========================================
+    // SIMPAN
+    // =========================================
+    localStorage.setItem("myTrips", JSON.stringify(existingTrips));
+
+    alert("AI Trip berhasil dibuat!");
+  };
+
   const handlePredict = async () => {
+    // =========================================
+    // VALIDASI FORM
+    // =========================================
+    if (!fromCity || !destination || !days || !travelers || !budgetType) {
+      alert("Lengkapi data trip terlebih dahulu!");
+
+      return;
+    }
+
+    // =========================================
+    // VALIDASI KOTA
+    // =========================================
+    if (fromCity === destination) {
+      alert("Kota asal dan tujuan tidak boleh sama!");
+
+      return;
+    }
+
     try {
       const res = await predictBudget({
         from_city: fromCity,
@@ -51,10 +117,24 @@ export default function Prediction({ refresh, selectedWisata }) {
       });
 
       setResult(res);
+
+      setTimeout(() => {
+        const target = document.querySelector(".prediction-result");
+
+        target?.scrollIntoView({
+          behavior: "smooth",
+        });
+      }, 200);
     } catch (error) {
       console.error("Error predict:", error);
     }
   };
+
+  const totalBudget =
+    result?.predicted_budget * 0.45 +
+    result?.predicted_budget * 0.25 +
+    result?.predicted_budget * 0.2 +
+    (result?.predicted_budget * 0.1 + (selectedWisata?.activity_price || 0));
 
   return (
     <div className="card prediction-card">
@@ -62,14 +142,11 @@ export default function Prediction({ refresh, selectedWisata }) {
       {/* TITLE */}
       {/* ===================================================== */}
       <h3>Trip Budget Prediction</h3>
-
       <p>
         Predict your travel budget based on route, duration, travelers, and
         budget type.
       </p>
-
       <br />
-
       {/* ===================================================== */}
       {/* AI SELECTED INFO */}
       {/* ===================================================== */}
@@ -89,19 +166,26 @@ export default function Prediction({ refresh, selectedWisata }) {
           <p>⭐ Rating : {selectedWisata.rating}</p>
         </div>
       )}
-
       <br />
-
       {/* ===================================================== */}
       {/* FORM */}
       {/* ===================================================== */}
       <div className="prediction-form">
         {/* FROM CITY */}
         <select value={fromCity} onChange={(e) => setFromCity(e.target.value)}>
+          <option value="" disabled hidden>
+            {" "}
+            Kota Asal{" "}
+          </option>
+
           <option value="Jakarta">Jakarta</option>
+
           <option value="Bandung">Bandung</option>
+
           <option value="Yogyakarta">Yogyakarta</option>
+
           <option value="Semarang">Semarang</option>
+
           <option value="Surabaya">Surabaya</option>
         </select>
 
@@ -110,10 +194,19 @@ export default function Prediction({ refresh, selectedWisata }) {
           value={destination}
           onChange={(e) => setDestination(e.target.value)}
         >
+          <option value="" disabled hidden>
+            {" "}
+            Kota Tujuan{" "}
+          </option>
+
           <option value="Jakarta">Jakarta</option>
+
           <option value="Bandung">Bandung</option>
+
           <option value="Yogyakarta">Yogyakarta</option>
+
           <option value="Semarang">Semarang</option>
+
           <option value="Surabaya">Surabaya</option>
         </select>
 
@@ -124,7 +217,7 @@ export default function Prediction({ refresh, selectedWisata }) {
           max="30"
           value={days}
           onChange={(e) => setDays(e.target.value)}
-          placeholder="Trip Days"
+          placeholder="Berapa Hari?"
         />
 
         {/* TRAVELERS */}
@@ -133,7 +226,7 @@ export default function Prediction({ refresh, selectedWisata }) {
           min="1"
           value={travelers}
           onChange={(e) => setTravelers(e.target.value)}
-          placeholder="Travelers"
+          placeholder="Jumlah Orang?"
         />
 
         {/* BUDGET TYPE */}
@@ -141,15 +234,20 @@ export default function Prediction({ refresh, selectedWisata }) {
           value={budgetType}
           onChange={(e) => setBudgetType(e.target.value)}
         >
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="luxury">Luxury</option>
-        </select>
+          <option value="" disabled hidden>
+            {" "}
+            Budget Trip{" "}
+          </option>
 
+          <option value="low">Hemat</option>
+
+          <option value="medium">Standard</option>
+
+          <option value="high">Premium</option>
+        </select>
         {/* BUTTON */}
         <button onClick={handlePredict}>Predict Budget</button>
       </div>
-
       <br />
 
       {/* ===================================================== */}
@@ -157,61 +255,98 @@ export default function Prediction({ refresh, selectedWisata }) {
       {/* ===================================================== */}
       {result && (
         <div className="prediction-result">
-          <p>
-            📍 Route: {result.from_city}
-            {" → "}
-            {result.destination}
-          </p>
+          {/* TOP INFO */}
+          <div className="prediction-top">
+            <div className="mini-card">
+              <span>📍 Route</span>
+              <h4>
+                {result.from_city} → {result.destination}
+              </h4>
+            </div>
 
-          <p> Trip Days: {result.days}</p>
+            <div className="mini-card">
+              <span>🗓 Days</span>
+              <h4>{result.days}</h4>
+            </div>
 
-          <p> Number of Travelers: {result.travelers}</p>
+            <div className="mini-card">
+              <span>👥 Travelers</span>
+              <h4>{result.travelers}</h4>
+            </div>
 
-          <p> Budget Type: {result.budget_type}</p>
+            <div className="mini-card">
+              <span>💼 Budget</span>
+              <h4>{result.budget_type}</h4>
+            </div>
+          </div>
 
-          <hr />
+          {/* BREAKDOWN */}
+          <h3 className="section-title">Estimated Budget Breakdown</h3>
 
-          <h4>Estimated Budget Breakdown</h4>
+          <div className="budget-grid">
+            {/* TRANSPORT */}
+            <div className="budget-card">
+              <span>🚗 Transport</span>
 
-          {/* TRANSPORT */}
-          <p> Transport: Rp {formatRupiah(result.predicted_budget * 0.35)}</p>
+              <h4>Rp {formatRupiah(result.predicted_budget * 0.45)}</h4>
+            </div>
 
-          {/* HOTEL */}
-          <p> Hotel: Rp {formatRupiah(result.predicted_budget * 0.4)}</p>
+            {/* PENGINAPAN */}
+            <div className="budget-card">
+              <span>🏡 Penginapan</span>
 
-          {/* FOOD */}
-          <p> Food: Rp {formatRupiah(result.predicted_budget * 0.15)}</p>
+              <h4>Rp {formatRupiah(result.predicted_budget * 0.25)}</h4>
+            </div>
 
-          {/* ACTIVITY */}
-          <p> Activity: Rp {formatRupiah(result.predicted_budget * 0.1)}</p>
+            {/* FOOD */}
+            <div className="budget-card">
+              <span>🍜 Food</span>
+
+              <h4>Rp {formatRupiah(result.predicted_budget * 0.2)}</h4>
+            </div>
+
+            {/* ACTIVITY */}
+            <div className="budget-card">
+              <span>🎯 Activity</span>
+
+              <h4>
+                Rp{" "}
+                {formatRupiah(
+                  result.predicted_budget * 0.1 +
+                    (selectedWisata?.activity_price || 0),
+                )}
+              </h4>
+            </div>
+          </div>
 
           {/* AI ACTIVITY */}
           {selectedWisata && (
-            <>
-              <hr />
+            <div className="selected-ai-card">
+              <h3>AI Selected Activity</h3>
 
-              <h4>AI Selected Activity</h4>
+              <p>{selectedWisata.activity_name}</p>
 
-              <p> {selectedWisata.activity_name}</p>
-
-              <p>
+              <span>
                 Ticket: Rp{" "}
                 {selectedWisata.activity_price.toLocaleString("id-ID")}
-              </p>
-            </>
+              </span>
+            </div>
           )}
 
-          <hr />
-
           {/* TOTAL */}
-          <p className="prediction-total">
-            Estimated Total Budget: Rp {formatRupiah(result.predicted_budget)}
-          </p>
-
-          <small>
-            Estimated budget based on destination, trip duration, travelers, and
-            budget type.
-          </small>
+          <div className="prediction-total-box">
+            <p>Total Estimated Budget</p>
+            <h2>Rp {formatRupiah(totalBudget)}</h2>
+            <small>
+              Estimated budget based on destination, trip duration, travelers,
+              and budget type.
+            </small>
+            <br />
+            <button className="create-trip-btn" onClick={handleCreateTrip}>
+              {" "}
+              Create AI Trip ✈{" "}
+            </button>
+          </div>
         </div>
       )}
     </div>

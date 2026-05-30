@@ -1,13 +1,12 @@
 import Summary from "./Summary";
 import Charts from "./Charts";
-import Insight from "./Insight";
 import "../../styles/dashboard.css";
 
 export default function Dashboard({ summary, data }) {
   return (
     <div>
       {/* ================= WELCOME ================= */}
-      <div className="card">
+      <div className="card dashboard-welcome">
         <h2>Welcome Back </h2>
 
         <p>
@@ -27,9 +26,6 @@ export default function Dashboard({ summary, data }) {
       <Charts data={data} />
 
       <br />
-
-      {/* ================= INSIGHT ================= */}
-      <Insight data={data} />
     </div>
   );
 }
