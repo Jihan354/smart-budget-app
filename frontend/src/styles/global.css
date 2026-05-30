@@ -2,6 +2,7 @@
 /* RESET */
 /* ===================================================== */
 
+/* Menghilangkan margin dan padding default browser */
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +13,7 @@
 /* BODY */
 /* ===================================================== */
 
+/* Styling dasar body website */
 body {
   font-family: Arial, sans-serif;
   background: #f4f6fb;
@@ -22,6 +24,7 @@ body {
 /* LAYOUT */
 /* ===================================================== */
 
+/* Container utama layout */
 .container {
   display: flex;
   min-height: 100vh;
@@ -31,6 +34,7 @@ body {
 /* MAIN CONTENT */
 /* ===================================================== */
 
+/* Area konten utama dashboard */
 .main {
   display: flex;
   flex-direction: column;
@@ -46,6 +50,7 @@ body {
 /* GLOBAL CARD */
 /* ===================================================== */
 
+/* Styling card global */
 .card {
   background: white;
 
@@ -54,4 +59,116 @@ body {
   border-radius: 16px;
 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* ===================================================== */
+/* LOGIN */
+/* ===================================================== */
+
+/* Wrapper halaman login */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-height: 100vh;
+
+  /* Background gradient ungu */
+  background: linear-gradient(
+    135deg,
+    #9900DD 0%,
+    #A020F0 49%,
+    #A020F0 100%
+  );
+}
+
+/* Card login */
+.login-card {
+  width: 400px;
+
+  /* Efek glassmorphism */
+  background: rgba(255, 255, 255, 0.92);
+
+  padding: 40px;
+
+  border-radius: 30px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Judul login */
+.login-card h2 {
+  text-align: center;
+
+  font-size: 36px;
+  font-weight: bold;
+
+  color: #111;
+}
+
+/* Input email dan password */
+.login-card input {
+  padding: 14px 18px;
+
+  border-radius: 14px;
+  border: 1px solid #ccc;
+
+  font-size: 16px;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+/* Efek saat input diklik */
+.login-card input:focus {
+  border: 1px solid #9900DD;
+
+  box-shadow: 0 0 5px rgba(153, 0, 221, 0.4);
+}
+
+/* Tombol login */
+.login-card button {
+  padding: 14px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #5b21b6;
+  color: white;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+/* Hover tombol */
+.login-card button:hover {
+  background: #4c1d95;
+}
+
+/* Text register */
+.switch {
+  text-align: center;
+
+  color: #555;
+
+  cursor: pointer;
+
+  font-size: 15px;
+}
+
+/* Hover text register */
+.switch:hover {
+  color: #9900DD;
 }
