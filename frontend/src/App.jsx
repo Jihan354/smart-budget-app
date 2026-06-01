@@ -30,7 +30,7 @@ import Register from "./components/auth/Register";
 // =========================================================
 // STYLE
 // =========================================================
-import "./styles/global.css";
+import "./styles/base.css";
 import "./styles/sidebar.css";
 import "./styles/responsive.css";
 import "./styles/navbar.css";

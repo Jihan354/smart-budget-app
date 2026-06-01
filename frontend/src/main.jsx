@@ -4,7 +4,7 @@ import App from "./App.jsx";
 
 import "@fontsource/poppins";
 
-import "./styles/global.css";
+import "./styles/base.css";
 import "./styles/dashboard.css";
 import "./styles/sidebar.css";
 import "./styles/responsive.css";
@@ -16,5 +16,5 @@ import "./styles/summary.css";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
-  </StrictMode>
+  </StrictMode>,
 );
