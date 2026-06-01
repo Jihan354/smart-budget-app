@@ -5,7 +5,7 @@ import { registerUser } from "../../services/api";
 import "../../styles/auth.css";
 
 export default function Register({ setShowRegister, setShowLogin }) {
-  const [name, setName] = useState("");
+  const [nama, setNama] = useState("");
 
   const [email, setEmail] = useState("");
 
@@ -18,7 +18,7 @@ export default function Register({ setShowRegister, setShowLogin }) {
   const handleRegister = async () => {
     try {
       await registerUser({
-        name,
+        nama,
         email,
         password,
       });
@@ -41,7 +41,7 @@ export default function Register({ setShowRegister, setShowLogin }) {
     <>
       <h2>Register</h2>
 
-      <input placeholder="Nama" onChange={(e) => setName(e.target.value)} />
+      <input placeholder="Nama" onChange={(e) => setNama(e.target.value)} />
 
       <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
 
