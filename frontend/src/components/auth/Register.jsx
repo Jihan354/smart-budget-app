@@ -4,12 +4,8 @@ import { registerUser } from "../../services/api";
 
 import "../../styles/auth.css";
 
-export default function Register({
-  setAuthPage,
-  setShowRegister,
-  setShowLogin,
-}) {
-  const [nama, setNama] = useState("");
+export default function Register({ setShowRegister, setShowLogin }) {
+  const [name, setName] = useState("");
 
   const [email, setEmail] = useState("");
 
@@ -22,28 +18,16 @@ export default function Register({
   const handleRegister = async () => {
     try {
       await registerUser({
-        nama,
+        name,
         email,
         password,
       });
 
-      // ===============================================
-      // SAVE USER
-      // ===============================================
-
       alert("Register berhasil!");
-
-      // ===============================================
-      // CLOSE REGISTER
-      // ===============================================
 
       if (setShowRegister) {
         setShowRegister(false);
       }
-
-      // ===============================================
-      // OPEN LOGIN
-      // ===============================================
 
       if (setShowLogin) {
         setShowLogin(true);
@@ -54,37 +38,35 @@ export default function Register({
   };
 
   return (
-    <div className="login-wrapper">
-      <div className="login-card">
-        <h2>Register</h2>
+    <>
+      <h2>Register</h2>
 
-        <input placeholder="Nama" onChange={(e) => setNama(e.target.value)} />
+      <input placeholder="Nama" onChange={(e) => setName(e.target.value)} />
 
-        <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
 
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-        <button onClick={handleRegister}>Register</button>
+      <button onClick={handleRegister}>Register</button>
 
-        <p
-          className="switch"
-          onClick={() => {
-            if (setShowRegister) {
-              setShowRegister(false);
-            }
+      <p
+        className="switch"
+        onClick={() => {
+          if (setShowRegister) {
+            setShowRegister(false);
+          }
 
-            if (setShowLogin) {
-              setShowLogin(true);
-            }
-          }}
-        >
-          Sudah punya akun? Login
-        </p>
-      </div>
-    </div>
+          if (setShowLogin) {
+            setShowLogin(true);
+          }
+        }}
+      >
+        Sudah punya akun? Login
+      </p>
+    </>
   );
 }

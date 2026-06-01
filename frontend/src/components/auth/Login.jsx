@@ -55,35 +55,33 @@ export default function Login({ setIsLogin, setShowLogin, setShowRegister }) {
   };
 
   return (
-    <div className="login-wrapper">
-      <div className="login-card">
-        <h2>Login</h2>
+    <>
+      <h2>Login</h2>
 
-        <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
 
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-        <button onClick={handleLogin}>Login</button>
+      <button onClick={handleLogin}>Login</button>
 
-        <p
-          className="switch"
-          onClick={() => {
-            if (setShowLogin) {
-              setShowLogin(false);
-            }
+      <p
+        className="switch"
+        onClick={() => {
+          if (setShowLogin) {
+            setShowLogin(false);
+          }
 
-            if (setShowRegister) {
-              setShowRegister(true);
-            }
-          }}
-        >
-          Belum punya akun? Register
-        </p>
-      </div>
-    </div>
+          if (setShowRegister) {
+            setShowRegister(true);
+          }
+        }}
+      >
+        Belum punya akun? Register
+      </p>
+    </>
   );
 }
