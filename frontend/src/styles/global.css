@@ -126,3 +126,427 @@ textarea {
 
   outline: none;
 }
+
+/* ================================================= */
+/* AUTH MODAL */
+/* ================================================= */
+
+.auth-overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  z-index: 99999;
+}
+
+.auth-modal {
+  background: white;
+
+  padding: 30px;
+
+  border-radius: 24px;
+
+  min-width: 400px;
+}
+
+.close-auth {
+  width: 100%;
+
+  margin-top: 12px;
+
+  border: none;
+
+  background: #ef4444;
+
+  color: white;
+
+  padding: 12px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+}
+
+/* ===================================================== */
+/* DARK MODE */
+/* ===================================================== */
+
+body.dark {
+  background: #0f172a;
+
+  color: white;
+}
+
+body.dark .main {
+  background: #0f172a;
+}
+
+body.dark .card,
+body.dark .top-navbar,
+body.dark .summary-card,
+body.dark .trip-card,
+body.dark .bar-card,
+body.dark .nearby-card,
+body.dark .prediction-card {
+  background: #1e293b !important;
+
+  color: white !important;
+}
+
+body.dark p,
+body.dark span,
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4 {
+  color: white !important;
+}
+
+body.dark .theme-btn {
+  background: #334155;
+
+  color: white;
+}
+
+/* ===================================================== */
+/* DARK MODE FULL */
+/* ===================================================== */
+
+body.dark {
+  background: #0f172a;
+
+  color: white;
+}
+
+/* MAIN AREA */
+
+body.dark .main {
+  background: #0f172a;
+}
+
+/* NAVBAR */
+
+body.dark .top-navbar {
+  background: #111827 !important;
+
+  border-bottom: 1px solid #334155;
+}
+
+/* SIDEBAR */
+
+body.dark .sidebar {
+  background: linear-gradient(180deg, #111827, #0f172a);
+}
+
+/* MENU */
+
+body.dark .menu div {
+  color: white;
+}
+
+body.dark .menu div:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* CARD */
+
+body.dark .card,
+body.dark .summary-card,
+body.dark .trip-card,
+body.dark .bar-card,
+body.dark .prediction-card,
+body.dark .nearby-card {
+  background: #1e293b !important;
+
+  color: white !important;
+
+  border: 1px solid #334155;
+}
+
+/* TEXT */
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark p,
+body.dark span,
+body.dark label {
+  color: white !important;
+}
+
+/* INPUT */
+
+body.dark input,
+body.dark select {
+  background: #111827;
+
+  color: white;
+
+  border: 1px solid #334155;
+}
+
+/* PLACEHOLDER */
+
+body.dark input::placeholder {
+  color: #94a3b8;
+}
+
+/* CATEGORY */
+
+body.dark .nearby-category,
+body.dark .category-tag {
+  background: #334155;
+
+  color: white !important;
+}
+
+/* BREAKDOWN CARD */
+
+body.dark .breakdown-card,
+body.dark .trip-breakdown-card,
+body.dark .info-card {
+  background: #111827 !important;
+
+  color: white !important;
+
+  border: 1px solid #334155;
+}
+
+/* BUTTON */
+
+body.dark button {
+  color: white;
+}
+
+/* THEME BUTTON */
+
+body.dark .theme-btn {
+  background: #334155;
+
+  color: white;
+}
+
+/* HERO */
+
+body.dark .nearby-hero {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* PLAN CARD */
+
+body.dark .wisata-card,
+body.dark .ai-card {
+  background: #111827 !important;
+
+  border: 1px solid #334155;
+}
+
+/* PRICE */
+
+body.dark .nearby-price,
+body.dark .price-text {
+  color: #c084fc !important;
+}
+
+/* TRIP BREAKDOWN */
+
+body.dark .trip-info-item {
+  background: #111827;
+
+  border: 1px solid #334155;
+}
+
+/* MODAL */
+
+body.dark .terms-modal,
+body.dark .login-card {
+  background: #1e293b;
+
+  color: white;
+}
+
+/* TABLE / CHART AREA */
+
+body.dark .recharts-wrapper {
+  color: white;
+}
+
+/* ===================================================== */
+/* DARK MODE FIX TEXT */
+/* ===================================================== */
+
+/* RATING */
+
+body.dark .rating-badge,
+body.dark .nearby-rating {
+  background: white !important;
+
+  color: #111827 !important;
+
+  font-weight: 700;
+}
+
+/* VISIT BUTTON */
+
+body.dark .visit-btn {
+  background: #111827 !important;
+
+  color: white !important;
+
+  border: 1px solid #334155;
+}
+
+body.dark .visit-btn:hover {
+  background: #1e293b !important;
+}
+
+/* CATEGORY */
+
+body.dark .nearby-category {
+  background: #334155 !important;
+
+  color: white !important;
+}
+
+/* PREDICTION INFO CARD */
+
+body.dark .prediction-info-card,
+body.dark .prediction-box,
+body.dark .budget-box,
+body.dark .result-box {
+  background: #111827 !important;
+
+  color: white !important;
+
+  border: 1px solid #334155;
+}
+
+/* AI SELECTED DESTINATION */
+
+body.dark .selected-ai-card {
+  background: #111827 !important;
+
+  color: white !important;
+
+  border: 1px solid #334155;
+}
+
+/* ESTIMATED BREAKDOWN */
+
+body.dark .breakdown-item {
+  background: #111827 !important;
+
+  color: white !important;
+
+  border: 1px solid #334155;
+}
+
+/* PURPLE TOTAL CARD */
+
+body.dark .total-budget-card {
+  background: linear-gradient(90deg, #7c3aed, #9333ea) !important;
+
+  color: white !important;
+}
+
+/* SMALL LABEL */
+
+body.dark small {
+  color: #cbd5e1 !important;
+}
+
+/* INPUT TEXT */
+
+body.dark input,
+body.dark select {
+  color: white !important;
+}
+
+/* OPTION */
+
+body.dark option {
+  background: #111827;
+
+  color: white;
+}
+
+/* ===================================================== */
+/* FIX VISIT DESTINATION */
+/* ===================================================== */
+
+body.dark .visit-btn {
+  background: #111827 !important;
+
+  color: white !important;
+
+  opacity: 1 !important;
+
+  border: 1px solid #334155 !important;
+
+  font-weight: 600;
+}
+
+body.dark .visit-btn svg {
+  color: #ef4444 !important;
+}
+
+/* ===================================================== */
+/* FIX RATING BADGE */
+/* ===================================================== */
+
+body.dark .nearby-rating {
+  background: white !important;
+
+  color: #111827 !important;
+
+  opacity: 1 !important;
+
+  font-weight: 700;
+}
+
+/* STAR ICON */
+
+body.dark .nearby-rating svg {
+  color: #facc15 !important;
+}
+
+/* ===================================================== */
+/* FIX PREDICTION CARD */
+/* ===================================================== */
+
+body.dark .prediction-card div,
+body.dark .prediction-card span,
+body.dark .prediction-card p,
+body.dark .prediction-card h4 {
+  color: white !important;
+}
+
+/* ===================================================== */
+/* FIX EMPTY WHITE BOX */
+/* ===================================================== */
+
+body.dark .prediction-stat-card,
+body.dark .budget-breakdown-card {
+  background: #111827 !important;
+
+  color: white !important;
+
+  border: 1px solid #334155 !important;
+}

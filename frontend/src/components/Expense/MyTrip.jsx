@@ -4,8 +4,10 @@ import TripSummary from "./TripSummary";
 import TripBreakdown from "./TripBreakdown";
 
 export default function MyTrip() {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+
   const [myTrips, setMyTrips] = useState(
-    JSON.parse(localStorage.getItem("myTrips")) || [],
+    JSON.parse(localStorage.getItem(`myTrips_${currentUser?.email}`)) || [],
   );
 
   const handleDelete = (indexToDelete) => {
@@ -13,8 +15,21 @@ export default function MyTrip() {
 
     setMyTrips(updatedTrips);
 
-    localStorage.setItem("myTrips", JSON.stringify(updatedTrips));
+    localStorage.setItem(
+      `myTrips_${currentUser?.email}`,
+      JSON.stringify(updatedTrips),
+    );
   };
+
+  if (!localStorage.getItem("login")) {
+    return (
+      <div className="card">
+        <h2>My Trip</h2>
+
+        <p>Login untuk melihat riwayat perjalanan Anda.</p>
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -437,3 +437,264 @@
 .prediction-total-box small {
   opacity: 0.8;
 }
+
+/* ===================================================== */
+/* RECOMMEND CARD */
+/* ===================================================== */
+
+.recommend-card {
+  background: white;
+
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+
+  transition: 0.25s ease;
+}
+
+.recommend-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ===================================================== */
+/* IMAGE WRAPPER */
+/* ===================================================== */
+
+.recommend-image-wrapper {
+  position: relative;
+
+  width: 100%;
+
+  height: 240px;
+}
+
+.recommend-image-wrapper img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* ===================================================== */
+/* RATING */
+/* ===================================================== */
+
+.image-rating {
+  position: absolute;
+
+  top: 14px;
+
+  right: 14px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+/* ===================================================== */
+/* OVERLAY */
+/* ===================================================== */
+
+.image-overlay {
+  position: absolute;
+
+  bottom: 0;
+
+  left: 0;
+
+  width: 100%;
+
+  padding: 18px;
+
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+
+  color: white;
+}
+
+.image-overlay h3 {
+  font-size: 20px;
+
+  margin-bottom: 4px;
+}
+
+.image-overlay p {
+  font-size: 14px;
+
+  opacity: 0.92;
+}
+
+/* ===================================================== */
+/* CONTENT */
+/* ===================================================== */
+
+.recommend-content {
+  padding: 18px;
+}
+
+/* ===================================================== */
+/* INFO ROW */
+/* ===================================================== */
+
+.recommend-info-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 16px;
+}
+
+/* CATEGORY */
+
+.category-tag {
+  background: #f3e8ff;
+
+  color: #7c3aed;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+/* PRICE */
+
+.price-tag {
+  font-weight: 700;
+
+  color: #111827;
+}
+
+/* ===================================================== */
+/* BUTTON */
+/* ===================================================== */
+
+.select-btn {
+  width: 100%;
+
+  border: none;
+
+  background: #7c3aed;
+
+  color: white;
+
+  padding: 13px;
+
+  border-radius: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  margin-bottom: 10px;
+}
+
+/* ===================================================== */
+/* MAP BUTTON */
+/* ===================================================== */
+
+.maps-btn {
+  width: 100%;
+
+  border: none;
+
+  background: #f3f4f6;
+
+  color: #111827;
+
+  padding: 13px;
+
+  border-radius: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* ===================================================== */
+/* DARK MODE FIX */
+/* ===================================================== */
+
+body.dark .image-rating {
+  background: rgba(15, 23, 42, 0.95);
+
+  color: #facc15;
+
+  border: 1px solid #334155;
+}
+
+body.dark .maps-btn {
+  background: #1e293b;
+
+  color: white;
+
+  border: 1px solid #334155;
+}
+
+body.dark .maps-btn:hover {
+  background: #334155;
+}
+
+body.dark .category-tag {
+  background: #334155;
+
+  color: white;
+}
+
+body.dark .price-tag {
+  color: white;
+}
+
+body.dark .recommend-card {
+  background: #0f172a;
+
+  border: 1px solid #1e293b;
+}
+
+body.dark .recommend-content {
+  background: #0f172a;
+}
+
+body.dark .mini-card {
+  background: #1e293b;
+
+  color: white;
+}
+
+body.dark .budget-card {
+  background: #1e293b;
+
+  color: white;
+}
+
+body.dark .budget-card span,
+body.dark .mini-card span {
+  color: #cbd5e1;
+}
+
+body.dark .selected-ai-card {
+  background: #020617;
+
+  border: 1px solid #1e293b;
+
+  color: white;
+}
+
+body.dark .prediction-result {
+  background: #0f172a;
+
+  color: white;
+}

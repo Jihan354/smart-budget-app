@@ -1,26 +1,27 @@
 export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
   // ================= LOGOUT =================
+
   const handleLogout = () => {
     setIsLogin(false);
   };
 
   return (
     <div className={open ? "sidebar open" : "sidebar closed"}>
-      {/* ================= TOGGLE ================= */}
-      <button className="toggle-btn" onClick={() => setOpen(!open)}>
-        ☰
-      </button>
-
       {/* ================= LOGO ================= */}
-      {open && (
-        <h2 className="logo">
-          Smart <span>Budget</span>
-        </h2>
-      )}
+
+      <div className="logo-wrapper">
+        {open && (
+          <h2 className="logo">
+            Smart <span>Budget</span>
+          </h2>
+        )}
+      </div>
 
       {/* ================= MENU ================= */}
+
       <div className="menu">
         {/* DASHBOARD */}
+
         <div
           className={page === "dashboard" ? "active" : ""}
           onClick={() => setPage("dashboard")}
@@ -29,6 +30,7 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
         </div>
 
         {/* PLAN TRIP */}
+
         <div
           className={page === "planTrip" ? "active" : ""}
           onClick={() => setPage("planTrip")}
@@ -36,18 +38,23 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
           {open && "Plan Trip"}
         </div>
 
-        {/* MyTrip */}
+        {/* MY TRIP */}
+
         <div
           className={page === "expenses" ? "active" : ""}
           onClick={() => setPage("expenses")}
         >
           {open && "MyTrip"}
         </div>
-      </div>
 
-      {/* ================= LOGOUT ================= */}
-      <div className="logout">
-        <button onClick={handleLogout}> {open && "Logout"} ➜]</button>
+        {/* DESTINATION */}
+
+        <div
+          className={page === "destination" ? "active" : ""}
+          onClick={() => setPage("destination")}
+        >
+          {open && "Destination Terdekat"}
+        </div>
       </div>
     </div>
   );

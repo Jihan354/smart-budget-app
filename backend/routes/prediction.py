@@ -18,7 +18,7 @@ tourism_model = keras.models.load_model(
 # LOAD DATASET
 # =========================================================
 tourism_df = pd.read_csv(
-    "indonesia_tourism_clean_for_ai (1).csv"
+    "tourism_with_images.csv"
 )
 
 # =========================================================
@@ -243,7 +243,8 @@ def predict_wisata():
             "category",
             "city",
             "price",
-            "rating"
+            "rating",
+            "Image_URL"
         ]
     ].to_dict(orient="records")
 

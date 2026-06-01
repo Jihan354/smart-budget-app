@@ -3,18 +3,18 @@ import Charts from "./Charts";
 import "../../styles/dashboard.css";
 
 export default function Dashboard({ summary, data }) {
+  if (!localStorage.getItem("login")) {
+    return (
+      <div className="card">
+        <h2>Dashboard Analytics</h2>
+
+        <p>Login untuk melihat analytics budget dan histori perjalanan Anda.</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {/* ================= WELCOME ================= */}
-      <div className="card dashboard-welcome">
-        <h2>Welcome Back </h2>
-
-        <p>
-          Manage your AI-powered travel budget ecosystem smarter and more
-          efficiently.
-        </p>
-      </div>
-
       <br />
 
       {/* ================= SUMMARY ================= */}

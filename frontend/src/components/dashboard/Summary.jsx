@@ -1,10 +1,35 @@
+import { useState } from "react";
+
 import "../../styles/summary.css";
 
 export default function Summary() {
   // =====================================================
   // GET MY TRIPS
   // =====================================================
-  const myTrips = JSON.parse(localStorage.getItem("myTrips")) || [];
+  const isLogin = localStorage.getItem("login");
+
+  const currentUser = isLogin ? JSON.parse(localStorage.getItem("user")) : null;
+
+  const myTrips =
+    JSON.parse(localStorage.getItem(`myTrips_${currentUser?.email}`)) || [];
+
+  // =====================================================
+  // TARGET BUDGET
+  // =====================================================
+  const [targetBudget, setTargetBudget] = useState(
+    Number(localStorage.getItem("targetBudget")) || 30000000,
+  );
+
+  const [inputBudget, setInputBudget] = useState(targetBudget);
+
+  // =====================================================
+  // SAVE TARGET
+  // =====================================================
+  const saveTargetBudget = () => {
+    localStorage.setItem("targetBudget", inputBudget);
+
+    setTargetBudget(Number(inputBudget));
+  };
 
   // =====================================================
   // FORMAT RUPIAH
@@ -57,7 +82,29 @@ export default function Summary() {
   // =====================================================
   // TOP CATEGORY
   // =====================================================
-  const topCategory = "Activity";
+  const categoryTotals = {
+    Transport: 0,
+    Penginapan: 0,
+    Food: 0,
+    Activity: 0,
+  };
+
+  myTrips.forEach((trip) => {
+    const budget = trip.prediction?.predicted_budget || 0;
+
+    categoryTotals.Transport += budget * 0.45;
+
+    categoryTotals.Penginapan += budget * 0.25;
+
+    categoryTotals.Food += budget * 0.2;
+
+    categoryTotals.Activity += budget * 0.1;
+  });
+
+  // ===================== // TOP CATEGORY // ==============================
+  const topCategory = Object.entries(categoryTotals).sort(
+    (a, b) => b[1] - a[1],
+  )[0][0];
 
   // =====================================================
   // CURRENT YEAR
@@ -94,21 +141,52 @@ export default function Summary() {
   // =====================================================
   let budgetStatus = "Safe";
 
+  const usagePercent = (yearlyExpense / targetBudget) * 100;
+
   // OVER
-  if (yearlyTripCount > 6 || yearlyExpense > 60000000) {
+  if (usagePercent >= 100) {
     budgetStatus = "Over Budget";
   }
 
   // WARNING
-  else if (yearlyTripCount >= 4 || yearlyExpense > 30000000) {
+  else if (usagePercent >= 80) {
     budgetStatus = "Warning";
   }
 
   return (
     <div>
       {/* ======================================= */}
-      {/* SUMMARY */}
+      {/* HERO */}
       {/* ======================================= */}
+      <div className="dashboard-hero">
+        {/* LEFT */}
+
+        <div className="dashboard-hero-left">
+          Halo, {isLogin ? currentUser?.name : "Traveler"}
+          <p>Berikut adalah ringkasan analitik dan wawasan perjalanan Anda.</p>
+        </div>
+
+        {/* RIGHT */}
+
+        <div className="dashboard-hero-right">
+          <div>
+            <small>TARGET BUDGET</small>
+
+            <h3>Rp {formatRupiah(targetBudget)}</h3>
+          </div>
+
+          <div className="target-input">
+            <input
+              type="number"
+              value={inputBudget}
+              onChange={(e) => setInputBudget(e.target.value)}
+            />
+
+            <button onClick={saveTargetBudget}>Set</button>
+          </div>
+        </div>
+      </div>
+
       <div className="summary">
         {/* TOTAL EXPENSE */}
         <div className="card">
@@ -160,8 +238,13 @@ export default function Summary() {
       {/* ======================================= */}
       <div className="card">
         <h4>Travel Expenses by Category</h4>
+        <p> Transport : Rp {formatRupiah(categoryTotals.Transport)}</p>
 
-        <p>🎫 Activity : Rp {formatRupiah(totalExpense)}</p>
+        <p> Penginapan : Rp {formatRupiah(categoryTotals.Penginapan)}</p>
+
+        <p> Food : Rp {formatRupiah(categoryTotals.Food)}</p>
+
+        <p> Activity : Rp {formatRupiah(categoryTotals.Activity)}</p>
       </div>
     </div>
   );

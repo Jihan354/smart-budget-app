@@ -1,3 +1,7 @@
+# ================= ROOT =================
+node_modules/
+package-lock.json
+
 # ================= BACKEND =================
 backend/__pycache__/
 backend/database.db
@@ -5,6 +9,7 @@ backend/venv/
 
 # ================= FRONTEND =================
 frontend/node_modules/
+frontend/dist/
 
 # ================= GLOBAL =================
 *.pyc

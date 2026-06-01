@@ -1,4 +1,40 @@
 /* ===================================================== */
+/* WRAPPER */
+/* ===================================================== */
+
+.charts-wrapper {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+
+  gap: 24px;
+}
+
+/* ===================================================== */
+/* CARD */
+/* ===================================================== */
+
+.bar-card,
+.pie-card {
+  width: 100%;
+
+  border-radius: 24px;
+
+  padding: 24px;
+
+  background: white;
+
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
+
+  transition: 0.25s ease;
+}
+
+.bar-card:hover,
+.pie-card:hover {
+  transform: translateY(-4px);
+}
+
+/* ===================================================== */
 /* CHART HEADER */
 /* ===================================================== */
 
@@ -10,6 +46,10 @@
   font-size: 28px;
 
   margin-bottom: 8px;
+
+  color: #0f172a;
+
+  font-weight: 700;
 }
 
 .chart-header p {
@@ -19,9 +59,23 @@
 }
 
 /* ===================================================== */
-/* BAR CARD */
+/* RECHARTS */
 /* ===================================================== */
 
-.bar-card {
-  width: 100%;
+.recharts-tooltip-wrapper {
+  border-radius: 14px !important;
+}
+
+/* ===================================================== */
+/* RESPONSIVE */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+  .charts-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-header h3 {
+    font-size: 22px;
+  }
 }

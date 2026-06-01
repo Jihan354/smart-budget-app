@@ -35,28 +35,28 @@ export default function TripBreakdown({ prediction, selectedWisata }) {
       <div className="budget-grid">
         {/* TRANSPORT */}
         <div className="budget-card">
-          <span>🚗 Transport</span>
+          <span> Transport</span>
 
           <h4>Rp {transport.toLocaleString("id-ID")}</h4>
         </div>
 
         {/* PENGINAPAN */}
         <div className="budget-card">
-          <span>🏡 Penginapan</span>
+          <span> Penginapan</span>
 
           <h4>Rp {penginapan.toLocaleString("id-ID")}</h4>
         </div>
 
         {/* FOOD */}
         <div className="budget-card">
-          <span>🍜 Food</span>
+          <span> Food</span>
 
           <h4>Rp {food.toLocaleString("id-ID")}</h4>
         </div>
 
         {/* ACTIVITY */}
         <div className="budget-card">
-          <span>🎯 Activity</span>
+          <span> Activity</span>
 
           <h4>Rp {activity.toLocaleString("id-ID")}</h4>
         </div>

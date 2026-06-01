@@ -1,18 +1,53 @@
 import { useState } from "react";
+
 import { registerUser } from "../../services/api";
 
-export default function Register({ setAuthPage }) {
+import "../../styles/auth.css";
 
+export default function Register({
+  setAuthPage,
+  setShowRegister,
+  setShowLogin,
+}) {
   const [nama, setNama] = useState("");
+
   const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
+
+  // =====================================================
+  // HANDLE REGISTER
+  // =====================================================
 
   const handleRegister = async () => {
     try {
-      await registerUser({ nama, email, password });
+      await registerUser({
+        nama,
+        email,
+        password,
+      });
+
+      // ===============================================
+      // SAVE USER
+      // ===============================================
 
       alert("Register berhasil!");
-      setAuthPage("login"); // balik ke login
+
+      // ===============================================
+      // CLOSE REGISTER
+      // ===============================================
+
+      if (setShowRegister) {
+        setShowRegister(false);
+      }
+
+      // ===============================================
+      // OPEN LOGIN
+      // ===============================================
+
+      if (setShowLogin) {
+        setShowLogin(true);
+      }
     } catch (err) {
       alert("Register gagal");
     }
@@ -24,12 +59,29 @@ export default function Register({ setAuthPage }) {
         <h2>Register</h2>
 
         <input placeholder="Nama" onChange={(e) => setNama(e.target.value)} />
+
         <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
         <button onClick={handleRegister}>Register</button>
 
-        <p className="switch" onClick={() => setAuthPage("login")}>
+        <p
+          className="switch"
+          onClick={() => {
+            if (setShowRegister) {
+              setShowRegister(false);
+            }
+
+            if (setShowLogin) {
+              setShowLogin(true);
+            }
+          }}
+        >
           Sudah punya akun? Login
         </p>
       </div>

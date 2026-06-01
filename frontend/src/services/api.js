@@ -2,7 +2,6 @@
 // alamat backend Flask
 const BASE_URL = "http://127.0.0.1:5000";
 
-
 // ================= EXPENSE =================
 
 // ambil semua data transaksi
@@ -22,16 +21,16 @@ export const addExpense = async (data) => {
   await fetch(`${BASE_URL}/expenses`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 };
 
-//  UPDATE DATA 
+//  UPDATE DATA
 export const updateExpense = async (id, data) => {
   const res = await fetch(`${BASE_URL}/expenses/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 
   return res.json();
@@ -40,10 +39,9 @@ export const updateExpense = async (id, data) => {
 // hapus data
 export const deleteExpense = async (id) => {
   await fetch(`${BASE_URL}/expenses/${id}`, {
-    method: "DELETE"
+    method: "DELETE",
   });
 };
-
 
 // ================= PREDICTION =================
 
@@ -52,12 +50,11 @@ export const predictBudget = async (data) => {
   const res = await fetch(`${BASE_URL}/predict`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 
   return res.json();
 };
-
 
 // ================= AUTH =================
 
@@ -66,9 +63,9 @@ export const loginUser = async (data) => {
   const res = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 
   if (!res.ok) throw new Error("Login gagal");
@@ -81,9 +78,9 @@ export const registerUser = async (data) => {
   const res = await fetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
 
   if (!res.ok) throw new Error("Register gagal");
@@ -96,9 +93,23 @@ export const predictWisata = async (data) => {
   const res = await fetch("http://127.0.0.1:5000/predict-wisata", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
+  });
+
+  return res.json();
+};
+
+// ================= NEARBY TOURISM =================
+
+export const getNearbyTourism = async (data) => {
+  const res = await fetch(`${BASE_URL}/nearby-tourism`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   });
 
   return res.json();

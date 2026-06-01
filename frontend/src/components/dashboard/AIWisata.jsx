@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { predictWisata } from "../../services/api";
 
-export default function AIWisata({ setSelectedWisata }) {
+export default function AIWisata({ setSelectedWisata, setShowLogin }) {
   // =========================================================
   // STATE
   // =========================================================
+
   const [city, setCity] = useState("");
 
   const [category, setCategory] = useState("");
@@ -14,69 +15,25 @@ export default function AIWisata({ setSelectedWisata }) {
 
   const [result, setResult] = useState([]);
 
-  const [wisataImages, setWisataImages] = useState({});
-
-  // =========================================================
-  // FETCH IMAGE
-  // =========================================================
-  const fetchWisataImage = async (placeName) => {
-    try {
-      const response = await fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(
-          placeName,
-        )}`,
-      );
-
-      const data = await response.json();
-
-      // =====================================================
-      // WIKIPEDIA IMAGE
-      // =====================================================
-      if (data.thumbnail?.source) {
-        return data.thumbnail.source;
-      }
-
-      // =====================================================
-      // FALLBACK IMAGE
-      // =====================================================
-      return `https://source.unsplash.com/600x400/?${encodeURIComponent(
-        placeName + " tourism indonesia",
-      )}`;
-    } catch (error) {
-      // =====================================================
-      // FINAL FALLBACK
-      // =====================================================
-      return `https://source.unsplash.com/600x400/?${encodeURIComponent(
-        placeName + " tourism indonesia",
-      )}`;
-    }
-  };
-
-  // =========================================================
-  // LOAD IMAGE
-  // =========================================================
-  useEffect(() => {
-    const loadImages = async () => {
-      const imageMap = {};
-
-      for (const item of result) {
-        const image = await fetchWisataImage(item.place_name);
-
-        imageMap[item.place_name] = image;
-      }
-
-      setWisataImages(imageMap);
-    };
-
-    if (result.length > 0) {
-      loadImages();
-    }
-  }, [result]);
-
   // =========================================================
   // PREDICT AI
   // =========================================================
+
   const handlePredict = async () => {
+    // =====================================================
+    // LOGIN CHECK
+    // =====================================================
+
+    if (!localStorage.getItem("login")) {
+      setShowLogin(true);
+
+      return;
+    }
+
+    // =====================================================
+    // VALIDATION
+    // =====================================================
+
     if (!city || !category || !price) {
       alert("Lengkapi pencarian wisata terlebih dahulu!");
 
@@ -101,7 +58,22 @@ export default function AIWisata({ setSelectedWisata }) {
   // =========================================================
   // SELECT WISATA
   // =========================================================
+
   const handleSelectWisata = (item) => {
+    // =====================================================
+    // LOGIN CHECK
+    // =====================================================
+
+    if (!localStorage.getItem("login")) {
+      setShowLogin(true);
+
+      return;
+    }
+
+    // =====================================================
+    // SAVE SELECTED
+    // =====================================================
+
     setSelectedWisata({
       destination: item.city,
 
@@ -113,6 +85,10 @@ export default function AIWisata({ setSelectedWisata }) {
 
       rating: item.rating,
     });
+
+    // =====================================================
+    // AUTO SCROLL
+    // =====================================================
 
     setTimeout(() => {
       const target = document.querySelector(".prediction-card");
@@ -128,6 +104,7 @@ export default function AIWisata({ setSelectedWisata }) {
       {/* ===================================================== */}
       {/* TITLE */}
       {/* ===================================================== */}
+
       <h2>AI Wisata Recommendation</h2>
 
       <p>
@@ -140,8 +117,10 @@ export default function AIWisata({ setSelectedWisata }) {
       {/* ===================================================== */}
       {/* FORM */}
       {/* ===================================================== */}
+
       <div className="ai-form">
         {/* CITY */}
+
         <select value={city} onChange={(e) => setCity(e.target.value)}>
           <option value="" disabled hidden>
             Pilih Kota Wisata
@@ -159,6 +138,7 @@ export default function AIWisata({ setSelectedWisata }) {
         </select>
 
         {/* CATEGORY */}
+
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
           <option value="" disabled hidden>
             Jenis Wisata
@@ -178,6 +158,7 @@ export default function AIWisata({ setSelectedWisata }) {
         </select>
 
         {/* PRICE */}
+
         <input
           type="text"
           placeholder="Budget Tiket Wisata"
@@ -192,6 +173,7 @@ export default function AIWisata({ setSelectedWisata }) {
         />
 
         {/* BUTTON */}
+
         <button className="ai-btn" onClick={handlePredict}>
           Find Recommendation
         </button>
@@ -200,42 +182,73 @@ export default function AIWisata({ setSelectedWisata }) {
       {/* ===================================================== */}
       {/* RESULT */}
       {/* ===================================================== */}
+
       {result.length > 0 && (
         <div className="recommend-grid">
           {result.map((item, index) => (
             <div key={index} className="recommend-card">
               {/* IMAGE */}
-              <img
-                src={wisataImages[item.place_name]}
-                alt={item.place_name}
-                loading="lazy"
-                onError={(e) => {
-                  e.target.src = "https://picsum.photos/400/300";
-                }}
-              />
 
-              {/* CONTENT */}
-              <div className="recommend-content">
-                {/* PLACE */}
-                <h3>{item.place_name}</h3>
-
-                {/* CITY */}
-                <p>{item.city}</p>
+              <div className="recommend-image-wrapper">
+                <img
+                  src={item.Image_URL}
+                  alt={item.place_name}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src =
+                      "https://via.placeholder.com/400x300?text=No+Image";
+                  }}
+                />
 
                 {/* RATING */}
-                <div className="recommend-rating">⭐ {item.rating}</div>
 
-                {/* PRICE */}
-                <div className="recommend-price">
-                  Rp {item.price.toLocaleString("id-ID")}
+                <div className="image-rating">⭐ {item.rating}</div>
+
+                {/* OVERLAY */}
+
+                <div className="image-overlay">
+                  <h3>{item.place_name}</h3>
+
+                  <p>{item.city}</p>
+                </div>
+              </div>
+
+              {/* CONTENT */}
+
+              <div className="recommend-content">
+                {/* CATEGORY + PRICE */}
+
+                <div className="recommend-info-row">
+                  <span className="category-tag">{item.category}</span>
+
+                  <span className="price-tag">
+                    {item.price === 0
+                      ? "GRATIS"
+                      : `Rp ${item.price.toLocaleString("id-ID")}`}
+                  </span>
                 </div>
 
-                {/* BUTTON */}
+                {/* PLAN BUTTON */}
+
                 <button
                   className="select-btn"
                   onClick={() => handleSelectWisata(item)}
                 >
-                  Plan AI ✈
+                  Plan AI ➜
+                </button>
+
+                {/* MAPS */}
+
+                <button
+                  className="maps-btn"
+                  onClick={() =>
+                    window.open(
+                      `https://www.google.com/maps/search/${item.place_name}`,
+                      "_blank",
+                    )
+                  }
+                >
+                  📍 Visit Destination
                 </button>
               </div>
             </div>
