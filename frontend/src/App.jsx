@@ -63,7 +63,7 @@ function App() {
   // =========================================================
   // SIDEBAR STATE
   // =========================================================
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 768);
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark",
   );

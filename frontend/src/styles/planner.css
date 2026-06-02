@@ -315,6 +315,28 @@
 }
 
 /* ===================================================== */
+/* MOBILE */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+  .prediction-top {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mini-card {
+    padding: 14px;
+  }
+
+  .mini-card h4 {
+    font-size: 16px;
+  }
+
+  .mini-card span {
+    font-size: 12px;
+  }
+}
+
+/* ===================================================== */
 /* MINI CARD */
 /* ===================================================== */
 
@@ -697,4 +719,56 @@ body.dark .prediction-result {
   background: #0f172a;
 
   color: white;
+}
+
+/* ===================================================== */
+/* MOBILE AI WISATA GRID */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+  .recommend-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+  }
+
+  .recommend-card {
+    border-radius: 18px;
+  }
+
+  .recommend-image-wrapper {
+    height: 140px;
+  }
+
+  .image-overlay h3 {
+    font-size: 15px;
+  }
+
+  .image-overlay p {
+    font-size: 11px;
+  }
+
+  .recommend-content {
+    padding: 12px;
+  }
+
+  .recommend-info-row {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 8px;
+  }
+
+  .category-tag,
+  .price-tag {
+    font-size: 11px;
+  }
+
+  .select-btn,
+  .maps-btn {
+    padding: 10px;
+
+    font-size: 12px;
+  }
 }

@@ -26,11 +26,21 @@
 }
 
 /* ===================================================== */
-/* SIDEBAR CLOSED */
+/* DESKTOP CLOSED */
 /* ===================================================== */
 
-.sidebar.closed {
-  transform: translateX(-100%);
+@media (min-width: 769px) {
+  .sidebar.closed {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.closed .menu div {
+    justify-content: center;
+  }
+
+  .sidebar.closed .logout button {
+    padding: 12px 0;
+  }
 }
 
 /* ===================================================== */
@@ -106,7 +116,7 @@
 }
 
 /* ===================================================== */
-/* ACTIVE MENU */
+/* ACTIVE */
 /* ===================================================== */
 
 .active {
@@ -156,13 +166,182 @@
 }
 
 /* ===================================================== */
-/* SIDEBAR CLOSED */
+/* TABLET */
 /* ===================================================== */
 
-.sidebar.closed .menu div {
-  justify-content: center;
+@media (max-width: 900px) {
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
 }
 
-.sidebar.closed .logout button {
-  padding: 12px 0;
+/* ===================================================== */
+/* MOBILE */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+  /* ================= SIDEBAR ================= */
+
+  .sidebar {
+    width: 100px !important;
+
+    left: 0;
+
+    top: 0;
+
+    height: 100vh;
+
+    transform: translateX(-100%);
+
+    transition: 0.3s ease;
+
+    z-index: 3000;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: transparent;
+
+    z-index: 2500;
+  }
+
+  /* ================= MENU ================= */
+
+  .menu div {
+    flex-direction: row;
+
+    justify-content: flex-start;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 16px;
+
+    font-size: 14px;
+  }
+
+  /* ================= LOGO ================= */
+
+  .logo {
+    font-size: 22px;
+
+    text-align: left;
+  }
+
+  /* ================= MAIN ================= */
+
+  .main {
+    margin-left: 0 !important;
+
+    width: 100%;
+
+    padding: 90px 16px 20px !important;
+
+    overflow-x: hidden;
+  }
+
+  /* ================= NAVBAR ================= */
+
+  .top-navbar {
+    left: 0 !important;
+
+    width: 100%;
+
+    z-index: 2000;
+
+    padding: 0 14px;
+  }
+
+  .navbar-right {
+    gap: 12px;
+
+    flex-wrap: wrap;
+  }
+
+  .navbar-right p {
+    font-size: 13px;
+  }
+
+  .navbar-badge {
+    font-size: 12px;
+
+    padding: 10px 14px;
+  }
+
+  /* ================= HERO ================= */
+
+  .dashboard-hero {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 18px;
+
+    padding: 22px 18px;
+
+    min-height: auto;
+  }
+
+  .dashboard-hero-right {
+    width: 100%;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .target-input {
+    width: 100%;
+
+    flex-direction: column;
+  }
+
+  .target-input input {
+    width: 100%;
+  }
+
+  .target-input button {
+    width: 100%;
+  }
+
+  /* ================= SUMMARY ================= */
+
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .card-summary {
+    padding: 18px;
+  }
+
+  .card-summary p {
+    font-size: 24px;
+  }
+
+  /* ================= CHART ================= */
+
+  .charts-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .bar-card,
+  .pie-card {
+    padding: 18px;
+  }
 }

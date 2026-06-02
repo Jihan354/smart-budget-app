@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "../../styles/navbar.css";
 
-import { FaWhatsapp, FaMoon, FaSun } from "react-icons/fa";
+import { FaWhatsapp, FaMoon, FaSun, FaInfoCircle } from "react-icons/fa";
 
 export default function Navbar({
   open,
@@ -44,11 +44,17 @@ export default function Navbar({
           {darkMode ? <FaSun /> : <FaMoon />}
         </button>
 
-        <p onClick={() => setShowTerms(true)}>Syarat dan Ketentuan</p>
+        <p className="terms-btn" onClick={() => setShowTerms(true)}>
+          <FaInfoCircle />
+          <span>Syarat dan Ketentuan</span>
+        </p>
 
-        <p onClick={() => window.open("https://wa.me/6281216341853", "_blank")}>
+        <p
+          className="wa-btn"
+          onClick={() => window.open("https://wa.me/6281216341853", "_blank")}
+        >
           <FaWhatsapp />
-          Hubungi Kami
+          <span>Hubungi Kami</span>
         </p>
 
         {/* ===================================== */}

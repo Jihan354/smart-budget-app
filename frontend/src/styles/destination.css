@@ -318,15 +318,90 @@
     font-size: 32px;
   }
 
+  /* GRID 2 KOLOM */
+
   .nearby-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+  }
+
+  /* CARD */
+
+  .nearby-card {
+    border-radius: 18px;
+  }
+
+  /* IMAGE */
+
+  .nearby-image-wrapper {
+    height: 150px;
+  }
+
+  /* OVERLAY */
+
+  .nearby-overlay {
+    padding: 12px;
+  }
+
+  .nearby-overlay h3 {
+    font-size: 16px;
+  }
+
+  .nearby-overlay p {
+    font-size: 11px;
+  }
+
+  /* BADGE */
+
+  .nearby-rating,
+  .nearby-distance {
+    font-size: 10px;
+
+    padding: 5px 8px;
+  }
+
+  /* CONTENT */
+
+  .nearby-content {
+    padding: 12px;
+  }
+
+  .nearby-info {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 8px;
+  }
+
+  .nearby-category,
+  .nearby-price {
+    font-size: 11px;
+  }
+
+  .visit-btn {
+    padding: 10px;
+
+    font-size: 12px;
   }
 }
+/* ===================================================== */
+/* DARK MODE FIX */
+/* ===================================================== */
 
 body.dark .nearby-hero button {
-  background: white !important;
+  background: white;
 
-  color: #2563eb !important;
+  color: #2563eb;
 
-  border: none !important;
+  border: none;
+}
+
+body.dark .nearby-hero p {
+  color: white;
+}
+
+body.dark .nearby-total {
+  color: #e2e8f0;
 }

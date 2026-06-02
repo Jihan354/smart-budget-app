@@ -101,3 +101,38 @@
 .insight-section {
   margin-top: 10px;
 }
+/* ===================================================== */
+/* MOBILE RESPONSIVE */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+  .dashboard-welcome {
+    padding: 18px;
+  }
+
+  .dashboard-welcome h2 {
+    font-size: 24px;
+  }
+
+  .dashboard-welcome p {
+    font-size: 14px;
+
+    line-height: 1.5;
+  }
+
+  .summary {
+    grid-template-columns: 1fr;
+
+    gap: 14px;
+  }
+
+  .card-summary {
+    padding: 18px;
+
+    border-radius: 16px;
+  }
+
+  .card-summary p {
+    font-size: 22px;
+  }
+}

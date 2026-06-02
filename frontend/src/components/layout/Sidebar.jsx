@@ -6,56 +6,76 @@ export default function Sidebar({ setPage, setIsLogin, open, setOpen, page }) {
   };
 
   return (
-    <div className={open ? "sidebar open" : "sidebar closed"}>
-      {/* ================= LOGO ================= */}
+    <>
+      {/* ================= SIDEBAR ================= */}
 
-      <div className="logo-wrapper">
-        {open && (
+      <div className={open ? "sidebar open" : "sidebar closed"}>
+        {/* ================= LOGO ================= */}
+
+        <div className="logo-wrapper">
           <h2 className="logo">
             Smart <span>Budget</span>
           </h2>
-        )}
+        </div>
+
+        {/* ================= MENU ================= */}
+
+        <div className="menu">
+          {/* DASHBOARD */}
+
+          <div
+            className={page === "dashboard" ? "active" : ""}
+            onClick={() => {
+              setPage("dashboard");
+              setOpen(false);
+            }}
+          >
+            Dashboard
+          </div>
+
+          {/* PLAN TRIP */}
+
+          <div
+            className={page === "planTrip" ? "active" : ""}
+            onClick={() => {
+              setPage("planTrip");
+              setOpen(false);
+            }}
+          >
+            Plan Trip
+          </div>
+
+          {/* MY TRIP */}
+
+          <div
+            className={page === "expenses" ? "active" : ""}
+            onClick={() => {
+              setPage("expenses");
+              setOpen(false);
+            }}
+          >
+            MyTrip
+          </div>
+
+          {/* DESTINATION */}
+
+          <div
+            className={page === "destination" ? "active" : ""}
+            onClick={() => {
+              setPage("destination");
+              setOpen(false);
+            }}
+          >
+            Destination Terdekat
+          </div>
+        </div>
       </div>
 
-      {/* ================= MENU ================= */}
+      {/* ================= OVERLAY ================= */}
 
-      <div className="menu">
-        {/* DASHBOARD */}
-
-        <div
-          className={page === "dashboard" ? "active" : ""}
-          onClick={() => setPage("dashboard")}
-        >
-          {open && "Dashboard"}
-        </div>
-
-        {/* PLAN TRIP */}
-
-        <div
-          className={page === "planTrip" ? "active" : ""}
-          onClick={() => setPage("planTrip")}
-        >
-          {open && "Plan Trip"}
-        </div>
-
-        {/* MY TRIP */}
-
-        <div
-          className={page === "expenses" ? "active" : ""}
-          onClick={() => setPage("expenses")}
-        >
-          {open && "MyTrip"}
-        </div>
-
-        {/* DESTINATION */}
-
-        <div
-          className={page === "destination" ? "active" : ""}
-          onClick={() => setPage("destination")}
-        >
-          {open && "Destination Terdekat"}
-        </div>
-      </div>
-    </div>
+      {open && (
+        <div className="sidebar-overlay" onClick={() => setOpen(false)} />
+      )}
+    </>
   );
 }

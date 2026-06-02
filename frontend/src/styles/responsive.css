@@ -25,7 +25,166 @@
     width: 70px;
   }
 
+  .logo {
+    font-size: 14px;
+  }
+
+  .menu div {
+    font-size: 12px;
+
+    padding: 10px 8px;
+  }
+
   .main {
+    margin-left: 70px;
+
+    width: calc(100% - 70px);
+
     padding: 12px;
+
+    overflow-x: hidden;
+  }
+
+  .dashboard-welcome {
+    flex-direction: column;
+  }
+
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .card-summary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  /* NAVBAR */
+  .top-navbar {
+    padding: 0 12px;
+
+    height: 70px;
+  }
+
+  .navbar-left {
+    gap: 10px;
+  }
+
+  .navbar-right {
+    gap: 10px;
+  }
+
+  /* BADGE */
+  .navbar-badge {
+    font-size: 11px;
+
+    padding: 8px 12px;
+
+    border-radius: 12px;
+
+    white-space: nowrap;
+  }
+
+  /* TEXT MENU */
+  .navbar-right p {
+    font-size: 0;
+  }
+
+  .navbar-right p svg {
+    font-size: 18px;
+
+    color: #444;
+  }
+
+  /* LOGIN BUTTON */
+  .auth-btn {
+    padding: 8px 12px;
+
+    font-size: 12px;
+
+    border-radius: 10px;
+  }
+
+  /* THEME BUTTON */
+  .theme-btn {
+    width: 38px;
+
+    height: 38px;
+
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-right {
+    gap: 10px;
+  }
+
+  .terms-btn span,
+  .wa-btn span {
+    display: none;
+  }
+
+  .terms-btn,
+  .wa-btn {
+    font-size: 18px;
+  }
+
+  .navbar-badge {
+    font-size: 12px;
+
+    padding: 10px 14px;
+  }
+
+  .auth-btn {
+    padding: 8px 14px;
+
+    font-size: 13px;
+  }
+}
+
+/* ===================================================== */
+/* MOBILE PAGE FIX */
+/* ===================================================== */
+
+@media (max-width: 768px) {
+  .main,
+  .destination-page,
+  .ai-card,
+  .prediction-page,
+  .expenses-page,
+  .trip-page {
+    width: 100%;
+
+    max-width: 100%;
+
+    padding-left: 14px;
+
+    padding-right: 14px;
+
+    margin: 0 auto;
+
+    overflow-x: hidden;
+
+    box-sizing: border-box;
+  }
+
+  .dashboard-hero,
+  .card-summary,
+  .nearby-card,
+  .recommend-card,
+  .prediction-result,
+  .mini-card,
+  .budget-card,
+  .selected-ai-card {
+    width: 100%;
+
+    max-width: 100%;
+
+    margin-left: auto;
+
+    margin-right: auto;
+
+    box-sizing: border-box;
   }
 }
