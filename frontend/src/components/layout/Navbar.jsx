@@ -44,19 +44,6 @@ export default function Navbar({
           {darkMode ? <FaSun /> : <FaMoon />}
         </button>
 
-        <p className="terms-btn" onClick={() => setShowTerms(true)}>
-          <FaInfoCircle />
-          <span>Syarat dan Ketentuan</span>
-        </p>
-
-        <p
-          className="wa-btn"
-          onClick={() => window.open("https://wa.me/6281216341853", "_blank")}
-        >
-          <FaWhatsapp />
-          <span>Hubungi Kami</span>
-        </p>
-
         {/* ===================================== */}
         {/* LOGIN / LOGOUT */}
         {/* ===================================== */}
