@@ -1,14 +1,34 @@
-# Smart Budget App 💰
+Smart Budget App Travel 💰✈️
 
-Smart Budget App adalah aplikasi AI-powered travel budgeting yang membantu pengguna merencanakan perjalanan, memprediksi budget travelling, menemukan destinasi wisata terdekat, serta mengelola histori perjalanan secara realtime.
+Smart Budget App Travel adalah aplikasi AI-powered travel budgeting yang membantu pengguna merencanakan perjalanan, memprediksi budget travelling, menemukan destinasi wisata terdekat, serta mengelola histori perjalanan secara realtime dengan tampilan modern dan responsive.
 
-Project ini dikembangkan sebagai Capstone Project Coding Camp 2026 dengan implementasi Front-End dan Back-End berbasis REST API.
+Project ini dikembangkan sebagai Capstone Project Coding Camp 2026 dengan implementasi Fullstack berbasis REST API.
 
 ---
 
-# 🚀 Features
+🌐 Live Demo
 
-## Frontend Features
+Frontend Deployment (Vercel):
+
+https://smart-budget-app-cpw8.vercel.app
+
+Backend API (Railway):
+
+https://smart-budget-app-production-1fba.up.railway.app
+
+---
+
+🔗 Repository
+
+GitHub Repository:
+
+https://github.com/Jihan354/smart-budget-app
+
+---
+
+🚀 Features
+
+Frontend Features
 
 - Dashboard Analytics
 - AI Trip Planner
@@ -18,9 +38,11 @@ Project ini dikembangkan sebagai Capstone Project Coding Camp 2026 dengan implem
 - Export PDF
 - Dark Mode UI
 - Login & Register Authentication
-- Responsive Design
+- Responsive Mobile Design
+- Sticky Sidebar Navigation
+- Modern Dashboard Interface
 
-## Backend Features
+Backend Features
 
 - REST API Flask
 - SQLite Database Integration
@@ -32,181 +54,74 @@ Project ini dikembangkan sebagai Capstone Project Coding Camp 2026 dengan implem
 
 ---
 
-# 🛠 Tech Stack
+🛠 Tech Stack
 
-## Frontend
+Frontend
 
 - React JS
 - Vite
-- CSS
+- CSS3
 - Recharts
 - jsPDF
+- React Icons
 
-## Backend
+Backend
 
 - Flask
 - Flask-CORS
 - SQLite
 - Pandas
 
-## AI / Dataset
+Deployment
+
+- Vercel (Frontend Hosting)
+- Railway Ready Backend Structure
+
+AI / Dataset
 
 - Tourism Dataset CSV
 - AI Budget Prediction Logic
 
 ---
 
-# 📂 Project Structure
+📱 Responsive Design
 
-```bash id="q7z3uv"
+Smart Budget App Travel telah dioptimalkan untuk:
+
+- Desktop View
+- Tablet View
+- Mobile Responsive View
+
+---
+
+📂 Project Structure
+
 smart-budget-app/
 │
 ├── backend/
-│   ├── routes/
-│   ├── models/
-│   ├── app.py
-│   ├── db.py
+│ ├── routes/
+│ ├── models/
+│ ├── app.py
+│ ├── db.py
 │
 ├── frontend/
-│   ├── src/
-│   ├── components/
-│   ├── styles/
-│   ├── package.json
+│ ├── src/
+│ ├── components/
+│ ├── styles/
+│ ├── package.json
 │
 └── README.md
-```
 
 ---
 
-# ⚙️ Installation Guide
-
-## 1. Clone Repository
-
-```bash id="m1v9lp"
-git clone https://github.com/Jihan354/smart-budget-app.git
-```
-
----
-
-# 🔧 Backend Setup
-
-## Masuk ke folder backend
-
-```bash id="yo8d5w"
-cd backend
-```
-
-## Membuat virtual environment
-
-```bash id="0mjlwm"
-python -m venv venv
-```
-
-## Mengaktifkan virtual environment
-
-### Windows
-
-```bash id="l9m0dy"
-venv\Scripts\activate
-```
-
-### Linux / MacOS
-
-```bash id="e1pkgr"
-source venv/bin/activate
-```
-
-## Install dependencies
-
-```bash id="q7o2ek"
-pip install -r requirements.txt
-```
-
-## Menjalankan backend server
-
-```bash id="yjlwmq"
-python app.py
-```
-
-Backend berjalan di:
-
-```bash id="pm3zk1"
-http://127.0.0.1:5000
-```
-
----
-
-# 💻 Frontend Setup
-
-## Masuk ke folder frontend
-
-```bash id="v8el7x"
-cd frontend
-```
-
-## Install dependencies
-
-```bash id="3d98qw"
-npm install
-```
-
-## Menjalankan frontend
-
-```bash id="u7pz4m"
-npm run dev
-```
-
-Frontend berjalan di:
-
-```bash id="xw92ek"
-http://localhost:5173
-```
-
----
-
-# 📊 Main Features Preview
-
-- Dashboard Analytics Realtime
-- AI Wisata Recommendation
-- Budget Prediction System
-- Nearby Tourism Detection
-- Export PDF Trip Report
-- Dark Mode User Interface
-- Authentication System
-
----
-
-# ✅ Mandatory Tech Stack Checklist
-
-- Networking Calls API
-- Module Bundler (Vite)
-- REST API Implementation
-- Database Integration
-- RESTful URL Convention
-- AI/ML Feature Integration
-- Stable Application Implementation
-- Non Web Generator Development
-
----
-
-# ✅ Side Quest Implementation
-
-- Responsive Web Design
-- REST API Database Storage
-- Deployment Ready
-- Hosting Support (Vercel)
-- UI/UX Custom Design
-
----
-
-# 👨‍💻 Contributors
+👨‍💻 Contributors
 
 - Fullstack Developer Team
-- Data Science Team
-- Machine Learning Team
+- Data Science Analyst Team
+- Machine Learning Engineer Team
 
 ---
 
-# 📄 License
+📄 License
 
 Project ini dibuat untuk kebutuhan Capstone Project Coding Camp 2026.
